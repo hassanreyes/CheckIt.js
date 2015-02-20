@@ -1,19 +1,71 @@
 <section data-ng-controller="ChecklistsController">
-    <div class="page-header">
+    <!--div class="page-header">
         <h1>New Checklist</h1>
-    </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+    </div-->
+    <div class="col-md-12" data-ng-keydown="onKeyDown($event);">
+        <form class="form-horizontal" data-ng-init="initialize()" novalidate >
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
+					<!-- Checklist -->
                     <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+						<div class="page-header">
+							<input type="text" id="name"
+								data-ng-model="checklist.name" data-ng-keydown="onTitleKeyDown($event)"
+								class="chklst_title" placeholder="My New Checklist Name" required/>
+						</div>
+						
+						<!--Sections-->
+						<ol data-ng-repeat="section in checklist.sections" class="list-group">
+							<li class="list-group-item">
+							<div class="input-group">
+							<input type="text" class="chklst_section_name" placeholder="Section Name" 
+								data-ng-model="section.name" data-ng-keypress="onSectionKeyPress($event, section)" 
+								custom-autofocus="$index == secFocusIndex && focusElement == 'SectionName'"/>
+								<input type="text" class="chklst_section_desc" placeholder="Section Description" 
+								data-ng-model="section.description" data-ng-keypress="onSectionDescKeyPress($event, section)"
+								custom-autofocus="$index == secFocusIndex && focusElement == 'SectionDesc'"/>
+							<span class="input-group-addon"><button type="button" class="btn btn-default btn-sm pull-right" data-ng-click="removeSection(section)">
+								<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+							</button></span>
+							</div>
+							
+							<!--Items-->
+							<ol class="list-group">
+								<li data-ng-repeat="item in section.items" class="list-group-item">
+									<span class="badge pull-left">{{$index+1}}</span>&nbsp;<textarea class="chklst_item" placeholder="Item {{$index+1}}" 
+									data-ng-model="item.content" data-ng-keydown="onItemKeyDown($event, section, item, $index)" 
+									custom-autofocus="$index == itemFocusIndex && focusElement == 'Item'" msd-elastic >
+								</textarea>
+								</li>
+							</ol>
+							<div class="btn-group pull-right">
+								<button type="button" class="btn btn-default btn-sm" data-ng-click="createItem(section)">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Item
+								</button>
+							</div>
+							</br>
+							</li>
+						</ol>
+						<button type="button" class="btn btn-default btn-sm" data-ng-click="createSection()" data-ng-disabled="{{checklist.name.trim().lengtg == 0}}">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Section
+						</button>
                     </div>
                 </div>
-                <div class="form-group">
-                    <input type="submit" class="btn btn-default">
+				<!-- Navigation Bar -->
+                <div class="navbar navbar-default navbar-fixed-bottom">
+				<div class="container">
+					<ul class="nav navbar-nav navbar-left">
+						<li><button type="button" class="btn btn-default navbar-btn" data-ng-click="create()">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Create
+						</button></li>
+						<li>&nbsp;</li>
+						<li><button type="button" class="btn btn-default navbar-btn" data-ng-click="clear()">
+							<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Clear
+						</button></li>
+					</ul>
                 </div>
+				</div>
+				<!-- Error Message -->
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>

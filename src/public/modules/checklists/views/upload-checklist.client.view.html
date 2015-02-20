@@ -1,0 +1,24 @@
+<section data-ng-controller="ChecklistsController">
+	<style>
+            
+	</style>
+	<div class="page-header">
+        <h1>Upload Checklist</h1>
+    </div>
+	<br/>
+	<div ng-no-file-drop>
+		File Drag/Drop is not supported for this browser, please use Upload button.
+		<br/>
+	</div>
+    <!--div class="button" ng-file-select ng-file-change="upload($files)">Upload on file change</div-->
+    Drop File:
+    <div ng-file-drop ng-model="files" class="well chklst_drop_zone" accept="text/plain" 
+        drag-over-class="chklst_file_over" ng-multiple="false" allow-dir="false">Drop checklist here (txt only)</div>
+	<br/>
+	<button type="button" class="btn btn-default" ng-file-select ng-model="files" accept="text/plain">
+		Upload single file
+	</button>
+	<ul>
+        <li ng-repeat="f in files" style="font:smaller">{{f.name}}</li>
+    </ul>
+</section>
