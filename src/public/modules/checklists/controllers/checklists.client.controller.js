@@ -1,11 +1,21 @@
 'use strict';
 
 // Checklists controller
-angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Checklists', '$upload', 'Parser', '$window',
-	function($scope, $rootScope, $stateParams, $location, Authentication, Checklists, $upload, Parser, $window) {
+angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Checklists', 'Categories', '$upload', 'Parser', '$window',
+	function($scope, $rootScope, $stateParams, $location, Authentication, Checklists, Categories, $upload, Parser, $window) {
 		$scope.authentication = Authentication;
 
+		$scope.categories = [];
+		$scope.category = {};
+		
 		$scope.initialize = function() {
+			
+			Categories.query(function(cats){
+				for(var i = 0; i < cats.length; i++){
+					$scope.categories.push({ id : cats[i]._id, name : cats[i].name, selected : false });
+				}
+			});
+			
 			if(!$rootScope.checklist){
 				var checklist = new Checklists ({
 					name: this.name,
@@ -17,6 +27,14 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		
 		// Create new Checklist
 		$scope.create = function() {
+			
+			if($scope.category.id === undefined){
+				$scope.error = 'Category is required';
+				return;
+			}
+			
+			$scope.checklist.category = $scope.category.id;
+			
 			// Redirect after save
 			$scope.checklist.$save(function(response) {
 				$location.path('checklists/' + response._id);

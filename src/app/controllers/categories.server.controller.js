@@ -22,14 +22,15 @@ exports.create = function(req, res) {
 			});
 		} else {
 			// Append as a child of given parent
-			if(req.parent){
-				Category.findById(req.parent).exec(function(err, cat) {
+			if(req.body.parent){
+				Category.findById(req.body.parent).exec(function(err, cat) {
 					if (err) {
 						return res.status(400).send({
 							message: errorHandler.getErrorMessage(err)
 						});
 					} else {
 						cat.appendChild(category);
+						res.jsonp(category);
 					}
 				});
 			}

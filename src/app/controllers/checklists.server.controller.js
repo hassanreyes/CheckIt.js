@@ -73,7 +73,7 @@ exports.delete = function(req, res) {
  * List of Checklists
  */
 exports.list = function(req, res) { 
-	Checklist.find().sort('-created').populate('user', 'displayName').exec(function(err, checklists) {
+	Checklist.find({ 'user' : req.user.id }).sort('-created').populate('user', 'displayName').populate('category').exec(function(err, checklists) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

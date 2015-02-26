@@ -5,9 +5,23 @@
     <div class="col-md-12" data-ng-keydown="onKeyDown($event);">
         <form class="form-horizontal" data-ng-init="initialize()" novalidate >
             <fieldset>
+            	<!-- Error Message -->
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+				
                 <div class="form-group">
 					<!-- Checklist -->
                     <div class="controls">
+                    	
+                		<label class="control-label" for="parent">Checklist Category</label>
+                    	<ui-select id="parent" ng-model="category.id" theme="bootstrap" style="width: 300px;" required>
+							<ui-select-match placeholder="Select a category path">{{$select.selected.name}}</ui-select-match>
+							<ui-select-choices repeat="cat.id as cat in categories | filter: $select.search">
+							  	<span ng-bind-html="cat.name | highlight: $select.search"></span>
+							</ui-select-choices>
+						</ui-select>
+                    	
 						<div class="page-header">
 							<input type="text" id="name"
 								data-ng-model="checklist.name" data-ng-keydown="onTitleKeyDown($event)"

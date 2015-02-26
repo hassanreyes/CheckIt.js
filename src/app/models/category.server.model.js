@@ -18,9 +18,9 @@ var CategorySchema = new Schema({
 		trim: true
 	},
 	description: {
-        type: String,
-        trim: true
-    },
+	        type: String,
+	        trim: true
+    	},
 	created: {
 		type: Date,
 		default: Date.now

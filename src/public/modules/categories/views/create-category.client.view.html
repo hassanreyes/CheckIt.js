@@ -11,9 +11,9 @@
                         <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
                     </div>
 					<label class="control-label" for="parent">Parent Category</label>
-					<ui-select id="parent" ng-model="selectedParentCat.selected" theme="bootstrap" style="width: 300px;">
+					<ui-select id="parent" ng-model="selectedParentCat.selected.id" theme="bootstrap" style="width: 300px;">
 						<ui-select-match placeholder="Select a category path">{{$select.selected.name}}</ui-select-match>
-						<ui-select-choices repeat="cat in parentCats | filter: $select.search">
+						<ui-select-choices repeat="cat.id as cat in parentCats | filter: $select.search">
 						  <span ng-bind-html="cat.name | highlight: $select.search"></span>
 						</ui-select-choices>
 					</ui-select>

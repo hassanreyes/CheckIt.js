@@ -12,7 +12,7 @@ angular.module('categories').controller('CategoriesController', ['$scope', '$sta
 			Categories.query(function(cats){
 				$scope.parentCats = [{id : 'none', name : 'None', selected : true }];
 				for(var i = 0; i < cats.length; i++){
-					$scope.parentCats.push({ id : cats[i]._id, name : cats[i].path + '/' + cats[i].name, selected : false });
+					$scope.parentCats.push({ id : cats[i]._id, name : cats[i].name, selected : false });
 				}
 			});
 		};
@@ -20,9 +20,9 @@ angular.module('categories').controller('CategoriesController', ['$scope', '$sta
 		// Create new Category
 		$scope.create = function() {
 			
-			var category = new Category({
+			var category = new Categories({
 				name : $scope.name,
-				parent : $scope.selectedParentCat[0].id
+				parent :  $scope.selectedParentCat.selected === undefined ? undefined : $scope.selectedParentCat.selected.id,
 			});
 			
 			// Redirect after save
