@@ -2,10 +2,24 @@
 	<div class="page-header">
 		<h1 data-ng-bind="checklist.name"></h1>
 	</div>
-	<div data-ng-repeat="section in checklist.sections">
-		<input type="text" data-ng-model="section.name" class="chklst_section_name" placeholder="Section Name">
-	</div>
 	
+	<!-- Sections -->
+	<ol data-ng-repeat="section in checklist.sections" class="list-group">
+		<li class="list-group-item">
+		<label class="chklst_section_name">{{section.name}}</label>
+			<small class="chklst_section_desc">{{section.description}}</small>
+		
+		<!--Items-->
+		<ol class="list-group">
+			<li data-ng-repeat="item in section.items" class="list-group-item">
+				<span class="badge pull-left">{{$index+1}}</span>
+				&nbsp;
+				<p class="chklst_item">{{item.content}}</p>
+			</li>
+		</ol>
+		</br>
+		</li>
+	</ol>
 	</div>
 	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == checklist.user._id))">
 		<a class="btn btn-primary" href="/#!/checklists/{{checklist._id}}/edit">

@@ -7,6 +7,19 @@ angular.module('checklists').factory('Checklists', ['$resource',
 		}, {
 			update: {
 				method: 'PUT'
+			},
+			browse: {
+				method: 'GET',
+				params: {isBrowsing: true},
+				isArray: true
+			},
+			save: {
+				method: 'POST',
+				isArray: true,
+				transmitRequest: function(data, header){
+					var jsonData = angular.toJson(data);
+					return jsonData;
+				}
 			}
 		});
 	}

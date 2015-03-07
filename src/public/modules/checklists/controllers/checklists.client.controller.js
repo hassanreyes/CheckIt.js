@@ -32,7 +32,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				$scope.error = 'Category is required';
 				return;
 			}
-			
+
 			$scope.checklist.category = $scope.category.id;
 			
 			// Redirect after save

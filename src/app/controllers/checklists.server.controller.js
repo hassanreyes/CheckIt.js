@@ -13,6 +13,15 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var checklist = new Checklist(req.body);
+	
+	// for (var secIdx = 0; secIdx < req.body.sections.length; ++secIdx) {
+	// 	//checklist.sections.push({name: req.body.sections[secIdx].name, description : req.body.sections[secIdx].description, items: [] });
+	// 	checklist.sections[secIdx].items = [];
+	// 	for (var itemIdx = 0; itemIdx < req.body.sections.length; ++itemIdx) {
+	// 		checklist.sections[secIdx].items.push({content : req.body.sections[secIdx].items[itemIdx].content});
+	// 	} 
+	// }
+	
 	checklist.user = req.user;
 
 	checklist.save(function(err) {
@@ -73,7 +82,11 @@ exports.delete = function(req, res) {
  * List of Checklists
  */
 exports.list = function(req, res) { 
-	Checklist.find({ 'user' : req.user.id }).sort('-created').populate('user', 'displayName').populate('category').exec(function(err, checklists) {
+	var query = undefined;
+	if(req.query.isBrowsing === undefined || req.query.isBrowsing != 'true'){
+		query = { 'user' : req.user.id };
+	}
+	Checklist.find(query).sort('-created').populate('user', 'displayName').populate('category').exec(function(err, checklists) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)

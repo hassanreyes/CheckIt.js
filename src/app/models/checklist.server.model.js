@@ -57,7 +57,7 @@ var SectionSchema = new Schema( {
         }],
         default: 'draft'
     },
-	Items : [ItemSchema]
+	items : [ItemSchema]
 });
 
 /**
