@@ -9,7 +9,7 @@ angular.module('categories').controller('CategoriesController', ['$scope', '$sta
 		$scope.selectedParentCat = {};
 		
 		$scope.initialize = function(){
-			Categories.query(function(cats){
+			Categories.crud.query(function(cats){
 				$scope.parentCats = [{id : 'none', name : 'None', selected : true }];
 				for(var i = 0; i < cats.length; i++){
 					$scope.parentCats.push({ id : cats[i]._id, name : cats[i].name, selected : false });
@@ -66,12 +66,12 @@ angular.module('categories').controller('CategoriesController', ['$scope', '$sta
 
 		// Find a list of Categories
 		$scope.find = function() {
-			$scope.categories = Categories.query();
+			$scope.categories = Categories.crud.query();
 		};
 
 		// Find existing Category
 		$scope.findOne = function() {
-			$scope.category = Categories.get({ 
+			$scope.category = Categories.crud.get({ 
 				categoryId: $stateParams.categoryId
 			});
 		};

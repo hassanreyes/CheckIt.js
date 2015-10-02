@@ -1,9 +1,9 @@
-<section data-ng-controller="ChecklistsController" data-ng-init="find()">
+<section data-ng-controller="ChecklistsController" data-ng-init="search()">
     <div class="page-header">
-        <h1>Checklists</h1>
+        <h3>Search Result for {{searchQuery}}</h3>
     </div>
     <div class="list-group">
-        <div data-ng-repeat="checklist in filteredChecklists | orderBy: 'category.name' | groupBy: 'category.name'">
+        <div data-ng-repeat="checklist in checklists | orderBy: 'category.name' | groupBy: 'category.name'">
             <a data-ng-href="#!/browse/{{checklist.category._id}}" ng-show="checklist.group_by_CHANGED">
                 <h3 ng-show="checklist.group_by_CHANGED">{{checklist.category.name}}</h2>
             </a>
@@ -17,12 +17,5 @@
 			<h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
         </a>
         </div>
-    </div>
-    
-    <pagination ng-model="currentPage" total-items="checklists.length" max-size="maxSize" boundary-links="true">
-            </pagination>
-            
-    <div class="alert alert-warning text-center" data-ng-hide="!checklists.$resolved || checklists.length">
-    	No Checklists yet, why don't you <a href="/#!/checklists/create">create one</a>?
     </div>
 </section>

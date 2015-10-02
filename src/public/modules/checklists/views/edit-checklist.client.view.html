@@ -1,19 +1,50 @@
-<section data-ng-controller="ChecklistsController" data-ng-init="findOne()">
+<section data-ng-controller="ChecklistsController" data-ng-init="edit()">
     <div class="page-header">
         <h1>Edit Checklist</h1>
     </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" data-ng-submit="update()" novalidate>
+    <div class="col-md-12" data-ng-keydown="onKeyDown($event);">
+        <form class="form-horizontal" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" data-ng-model="checklist.name" id="name" class="form-control" placeholder="Name" required>
-                    </div>
+                    <div class="page-header">
+						<input type="text" id="name"
+							data-ng-model="workingOn.name" data-ng-keydown="onTitleKeyDown($event)" custom-autofocus="focusElement == 'Title'"
+							class="chklst_title" placeholder="My New Checklist Name" required/>
+					</div>
+                    <!--Sections-->
+					<ul data-ng-repeat="section in workingOn.sections" id="create_chklst_section_{{$index}}" style="list-style-type: none;">
+						<li class="list-group-item">
+							<small><a data-ng-click="removeSection($index)"><span class="glyphicon glyphicon-remove chklst_remove"></span></a></small>
+							<input type="text" class="chklst_section_name" placeholder="Section Name" 
+								data-ng-model="section.name" data-ng-keypress="onSectionKeyPress($event, section)"  data-ng-keydown="onSectionKeyDown($event, section, $index)"
+								custom-autofocus="$index == secFocusIndex && focusElement == 'SectionName'"/>
+								<input type="text" class="chklst_section_desc" placeholder="Section Description" 
+								data-ng-model="section.description" data-ng-keypress="onSectionDescKeyPress($event, section)" data-ng-keydown="onSectionDescKeyDown($event, section, $index)"
+								custom-autofocus="$index == secFocusIndex && focusElement == 'SectionDesc'"
+								role="group"/>
+							
+							<ul class="list-group" style="list-style-type: none;">
+								<li data-ng-repeat="item in section.items" id="create_chklst_item_{{$index}}">
+									<small><a data-ng-click="removeItem(section, $index)"><span class="glyphicon glyphicon-remove chklst_remove"></span></a></small>
+									<!--span class="badge pull-left">{{$index+1}}</span>&nbsp;--><textarea class="chklst_item" placeholder="Item {{$index+1}}" 
+									data-ng-model="item.content" data-ng-keydown="onItemKeyDown($event, section, item, $index)" 
+									custom-autofocus="$index == itemFocusIndex && focusElement == 'Item'" msd-elastic >
+								</textarea>
+								</li>
+							</ul>
+						</li>
+					</ul>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Update" class="btn btn-default">
+                <!-- Navigation Bar -->
+                <div class="navbar navbar-default">
+				<div class="container">
+					<ul class="nav navbar-nav navbar-left">
+						<li><button type="button" class="btn btn-default navbar-btn" data-ng-click="update()">
+							<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save</button>
+						</li>
+					</ul>
                 </div>
+				</div>
 				<div data-ng-show="error" class="text-danger">
 					<strong data-ng-bind="error"></strong>
 				</div>

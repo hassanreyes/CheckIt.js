@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
+	Checklist = mongoose.model('Checklist'),
 	crypto = require('crypto');
 
 /**
@@ -109,7 +110,11 @@ var UserSchema = new Schema( {
             enum: ['inactive', 'active' ]
         }],
         default: ['inactive']
-    }
+    },
+    favorites: [{ 
+        type: Schema.ObjectId,
+        ref: 'Checklist'
+    }]
 });
 
 /**
@@ -169,23 +174,23 @@ mongoose.model('User', UserSchema);
 /**
  * Setup the admin user
  */
-var User = mongoose.model('User')
-var user = new User( { 
-    firstName : 'Hassan', 
-    lastName : 'Reyes', 
-    displayName : 'Administrator', 
-    username: 'Admin', 
-    password : 'admin123', 
-    roles : ['admin'], 
-    email : 'hassan.reyes@gmail.com', 
-    status : 'active',
-    provider : 'local'
-});
+// var User = mongoose.model('User')
+// var user = new User( { 
+//     firstName : 'Hassan', 
+//     lastName : 'Reyes', 
+//     displayName : 'Administrator', 
+//     username: 'Admin', 
+//     password : 'admin123', 
+//     roles : ['admin'], 
+//     email : 'hassan.reyes@gmail.com', 
+//     status : 'active',
+//     provider : 'local'
+// });
 
-User.findUniqueUsername(user.username, '', function(adminUser){
-   if(!adminUser){
-       user.save(function(err, adminUser){
-          console.log(err); 
-        });
-   } 
-});
+// User.findUniqueUsername(user.username, '', function(adminUser){
+//   if(!adminUser){
+//       user.save(function(err, adminUser){
+//           console.log(err); 
+//         });
+//   } 
+// });

@@ -4,7 +4,7 @@
 var ApplicationConfiguration = (function() {
 	// Init module configuration options
 	var applicationModuleName = 'checkit';
-	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'monospaced.elastic', 'angularFileUpload', 'ngFileReader', 'ui.select'];
+	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',  'ui.router', 'ui.bootstrap', 'ui.utils', 'monospaced.elastic', 'angularFileUpload', 'ngFileReader', 'ui.select', 'ui.tree', 'ngSocial'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {

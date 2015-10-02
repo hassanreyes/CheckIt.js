@@ -14,6 +14,17 @@ module.exports = function(app) {
 		.put(users.requiresLogin, checklists.hasAuthorization, checklists.update)
 		.delete(users.requiresLogin, checklists.hasAuthorization, checklists.delete);
 
+	app.route('/search/:query')
+		.get(checklists.search);
+		
+	// Sharing
+	app.route('/share/:shareId')
+		.get(checklists.share);
+		
 	// Finish by binding the Checklist middleware
 	app.param('checklistId', checklists.checklistByID);
+	app.param('shareId', checklists.shareChecklist);
+	app.param('query', checklists.search);
+	
+	
 };

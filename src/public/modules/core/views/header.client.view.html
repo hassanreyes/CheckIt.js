@@ -9,14 +9,11 @@
 		<a href="/#!/" class="navbar-brand">Check-It</a>
 	</div>
 	<nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
-		<!--ul class="nav navbar-nav" >
+		<ul class="nav navbar-nav" >
 			<li>
-				<a href="/browse">Browse</a>
+				<a href="#">Learn</a>
 			</li>
-			<li>
-				<a href="">Learn</a>
-			</li>
-		</ul-->
+		</ul>
 		<!--data-ng-if="menu.shouldRender(menu, authentication.user);"-->
 		<ul class="nav navbar-nav">
 			<li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
@@ -31,7 +28,7 @@
 				</ul>
 				<a ng-switch-default href="/#!/{{item.link}}" data-ng-bind="item.title"></a>
 			</li>
-		</ul>z
+		</ul>
 		<ul class="nav navbar-nav navbar-right" data-ng-hide="authentication.user">
 			<li ui-route="/signup" ng-class="{active: $uiRoute}">
 				<a href="/#!/signup">Sign Up</a>
@@ -63,5 +60,15 @@
 				</ul>
 			</li>
 		</ul>
+		
+		<form class="navbar-form navbar-right" role="search">
+	        <div class="form-group">
+	          	<input type="text" class="form-control" placeholder="Search" ng-model="query" ng-pristine="search(query)">
+	        </div>
+	        <button type="button" class="btn btn-default btn-primary" data-ng-click="search(query)">
+	        	<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Submit
+        	</button>
+      	</form>
+		
 	</nav>
 </div>

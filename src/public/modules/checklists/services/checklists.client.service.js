@@ -12,14 +12,18 @@ angular.module('checklists').factory('Checklists', ['$resource',
 				method: 'GET',
 				params: {isBrowsing: true},
 				isArray: true
-			},
-			save: {
-				method: 'POST',
-				isArray: true,
-				transmitRequest: function(data, header){
-					var jsonData = angular.toJson(data);
-					return jsonData;
-				}
+			}
+		});
+	}
+]);
+
+//Checklists service used to communicate Checklists REST endpoints
+angular.module('checklists').factory('Search', ['$resource',
+	function($resource) {
+		return $resource('search/:query', { query : '@query' }, {
+			search: {
+				method: 'GET',
+				params: { searchText: '@query' }
 			}
 		});
 	}
@@ -153,6 +157,90 @@ angular.module('checklists').factory('Parser', ['Checklists',
 				
 				return checklist;
 			}
+		};
+	}
+]);
+
+angular.module('checklists').factory('WorkingChecklist', ['Checklists',
+	function(Checklists){
+		
+		var name = '';
+		var category = {};
+		var checklist = undefined;
+		var observerCallbacks = [];
+		
+		return {
+			
+			currentCategory: function(){
+				return category;
+			},
+			
+			//register an observer
+			registerObserverCallback: function(callback){
+				observerCallbacks.push(callback);
+			},
+			
+			//call this when you know 'checklist' has been changed
+			notifyObsrvers: function(){
+				angular.forEach(observerCallbacks, function(callback){
+			      callback();
+			    });
+			},
+			
+			clear: function(){
+				this.checklist = new Checklists ({
+					name: this.name,
+					sections : []
+				});
+				this.notifyObsrvers();
+			},
+			
+			currentChecklist: function(){
+				if(this.checklist == undefined){
+					this.checklist = new Checklists ({
+						name: this.name,
+						sections : []
+					});
+				}
+				return this.checklist;
+			},
+			
+			setCurrentChecklist: function(checklist){
+				this.checklist = checklist;
+				this.notifyObsrvers();
+			},
+			
+			addSection: function(name){
+				name = name ? name : '';
+				this.checklist.sections.push({ name : name, items : [] });
+				this.notifyObsrvers();
+			},
+			
+			removeLastSection: function(){
+				this.checklist.sections.pop();
+				this.notifyObsrvers();
+			},
+			
+			removeSection: function(idx){
+				this.checklist.sections.splice(idx, 1);
+				this.notifyObsrvers();
+			},
+			
+			addItem: function(section, content){
+				section.items.push({ content : content });
+				this.notifyObsrvers();
+			},
+			
+			removeLastItem: function(section){
+				section.items.pop();
+				this.notifyObsrvers();
+			},
+			
+			removeItem: function(section, idx){
+				section.items.splice(idx,1);
+				this.notifyObsrvers();
+			}
+
 		};
 	}
 ]);

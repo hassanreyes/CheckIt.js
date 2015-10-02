@@ -13,3 +13,120 @@
 .ng-valid.ng-dirty {
 	border-color: #78FA89;
 }
+.sidebar{
+	margin-left: -250px;
+	left: 250px;
+	width: 250px;
+	background: #080808;
+	position: fixed;
+	height: 100%;
+	overflow-y: auto;
+	z-index: 1000;
+	transition: all 0.4s ease 0s;
+}
+.content-wraper{
+	width: calc(100% - 260px);
+	margin-left: 250px;
+}
+.wrapper {
+	padding-left: 255px;
+	transition: all 0.4s ease 0s;
+}
+.small-socil-icon{
+	max-width: 24px;
+	max-height: 24px;
+}
+#username{
+	min-width: 150px;
+	max-width: 200px;
+}
+#password{
+	min-width: 150px;
+	max-width: 200px;
+}
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+.col-fixed {
+    /* custom width */
+    width:320px;
+}
+
+/** Dropdown submenu**/
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+
+
+.category-tree-handle {
+    background: #f8faff;
+    border-bottom: 1px dashed silver;
+    color: #7c9eb2;
+    padding: 10px 10px;
+}
+
+.category-tree-handle:hover {
+    color: #438eb9;
+    background: #f4f6f7;
+    border-color: #dce2e8;
+}
+
+.category-tree-placeholder {
+    background: #f0f9ff;
+    border: 2px dashed #bed2db;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}

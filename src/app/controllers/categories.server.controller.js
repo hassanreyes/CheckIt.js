@@ -121,3 +121,18 @@ exports.hasAuthorization = function(req, res, next) {
 	}
 	next();
 };
+
+/**
+ * Get Categories tree
+ */
+exports.tree = function(req, res) { 
+	Category.GetFullArrayTree(function(err, tree) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(tree);
+		}
+	});
+};

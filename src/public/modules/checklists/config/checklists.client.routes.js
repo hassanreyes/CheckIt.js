@@ -24,6 +24,11 @@ angular.module('checklists').config(['$stateProvider',
 		state('editChecklist', {
 			url: '/checklists/:checklistId/edit',
 			templateUrl: 'modules/checklists/views/edit-checklist.client.view.html'
+		}).
+		state('search', {
+			url: '/search?query',
+			templateUrl: 'modules/checklists/views/result-search.client.view.html',
+			realoadOnSearch: true
 		});
 	}
 ]);

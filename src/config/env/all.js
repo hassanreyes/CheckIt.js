@@ -16,8 +16,11 @@ module.exports = {
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
 				'public/lib/angular-ui-select/dist/select.css',
+				'public/lib/angular-ui-tree/dist/angular-ui-tree.min.css',
+				'public/lib/angular-social/angular-social.css',
 			],
 			js: [
+				'public/lib/es5-shim/es5-shim.min.js',
 				'public/lib/angular/angular.js',
 				'public/lib/angular-resource/angular-resource.js', 
 				'public/lib/angular-cookies/angular-cookies.js', 
@@ -29,12 +32,14 @@ module.exports = {
 				'public/lib/angular-ui-select/dist/select.min.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/angular-elastic/elastic.js',
+				'public/lib/angular-ui-tree/dist/angular-ui-tree.min.js',
 				'public/lib/checklist/chklst-edition.js',
 				'public/lib/ng-file-upload/angular-file-upload.min.js',
 				'public/lib/ng-file-upload/angular-file-upload-shim.min.js',
 				'public/lib/ngFileReader/vendor/swfobject.js',
 				'public/lib/ngFileReader/vendor/jquery.FileReader.js',
-				'public/lib/ngFileReader/src/ngFileReader.js'
+				'public/lib/ngFileReader/src/ngFileReader.js',
+				'public/lib/angular-social/angular-social.js'
 			]
 		},
 		css: [

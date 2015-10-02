@@ -1,28 +1,65 @@
 'use strict';
 
 // Checklists controller
-angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Checklists', 'Categories', '$upload', 'Parser', '$window',
-	function($scope, $rootScope, $stateParams, $location, Authentication, Checklists, Categories, $upload, Parser, $window) {
+angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Checklists', 'Categories', '$upload', 'Parser', 'WorkingChecklist', 'Search', '$http',
+	function($scope, $rootScope, $stateParams, $location, Authentication, Checklists, Categories, $upload, Parser, WorkingChecklist, Search, $http) {
 		$scope.authentication = Authentication;
+		$scope.user = Authentication.user;
 
 		$scope.categories = [];
-		$scope.category = {};
+		$scope.category = WorkingChecklist.currentCategory();
+		$scope.checklist = {};
+		$scope.workingOn = WorkingChecklist.currentChecklist();
+		$scope.treeOptions = { };
 		
-		$scope.initialize = function() {
-			
-			Categories.query(function(cats){
+		$scope.filteredChecklists = [],
+		$scope.currentPage = 1,
+		$scope.numPerPage = 10,
+		$scope.maxSize = 10;
+		
+		$scope.initialize = function(){
+			$scope.clear();
+		}
+		
+		var updateControllerChecklist = function(){
+			$scope.workingOn = WorkingChecklist.currentChecklist();
+		}
+		
+		WorkingChecklist.registerObserverCallback(updateControllerChecklist);
+		
+		$scope.loadCategories = function(){
+			Categories.crud.query(function(cats){
 				for(var i = 0; i < cats.length; i++){
 					$scope.categories.push({ id : cats[i]._id, name : cats[i].name, selected : false });
 				}
 			});
 			
-			if(!$rootScope.checklist){
-				var checklist = new Checklists ({
-					name: this.name,
-					sections : []
-				});
-				$scope.checklist = checklist;
+			if($rootScope.workingOn != undefined){
+				$scope.workingOn = $rootScope.workingOn;
 			}
+		};
+		
+		$scope.categorySelected = function($item, $model){
+			$scope.workingOn.category = $scope.category.id;
+		};
+		
+		$scope.search = function(){
+			
+			var search = $location.search();
+			$scope.searchQuery = search.query;
+			
+			Search.search({query : search.query}, function(searchResult){
+				var checklists = [];
+				for(var i = 0; i < searchResult.results.length; i++)
+				{
+					checklists[i] = searchResult.results[i].obj;
+				}
+				$scope.checklists = checklists;
+			});
+		}
+		
+		$scope.clear = function(){
+			WorkingChecklist.clear();
 		};
 		
 		// Create new Checklist
@@ -33,10 +70,25 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				return;
 			}
 
-			$scope.checklist.category = $scope.category.id;
+			$scope.workingOn.category = $scope.category.id;
+			
+			//Validate, remove empty sections or items
+			if($scope.workingOn.sections){
+				var sec = $scope.workingOn.sections[$scope.workingOn.sections.length - 1];
+				if(sec.name == ''){
+					$scope.workingOn.sections.pop();
+				} else {
+					if(sec.items){
+						var item = sec.items[sec.items.length - 1];
+						if(item.content == undefined || item.content == ''){
+							sec.items.pop();
+						}
+					}	
+				}
+			}
 			
 			// Redirect after save
-			$scope.checklist.$save(function(response) {
+			$scope.workingOn.$save(function(response) {
 				$location.path('checklists/' + response._id);
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
@@ -62,7 +114,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 
 		// Update existing Checklist
 		$scope.update = function() {
-			var checklist = $scope.checklist;
+			var checklist = $scope.workingOn;
 
 			checklist.$update(function() {
 				$location.path('checklists/' + checklist._id);
@@ -74,6 +126,9 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		// Find a list of Checklists
 		$scope.find = function() {
 			$scope.checklists = Checklists.query();
+			$scope.checklists.$promise.then(function(data){
+			    $scope.filteredChecklists = $scope.checklists.slice(0, $scope.numPerPage);	
+			});
 		};
 
 		// Find existing Checklist
@@ -81,6 +136,14 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 			$scope.checklist = Checklists.get({ 
 				checklistId: $stateParams.checklistId
 			});
+		};
+		
+		$scope.edit = function(){
+			var checklist = Checklists.get({ 
+				checklistId: $stateParams.checklistId
+			});	
+			
+			WorkingChecklist.setCurrentChecklist(checklist);
 		};
 		
 		// Upload a checklist
@@ -93,7 +156,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				var file = files[0];
 				var reader = new FileReader();
 				reader.onload = function(e) {
-					$rootScope.checklist = Parser.parse(reader.result);
+					$rootScope.workingOn = Parser.parse(reader.result);
 					//$window.location.href = "#/checklists/create";
 					$scope.$apply(function(){
 						$location.path('/checklists/create');
@@ -103,9 +166,64 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 			}
 		};
 		
-		$scope.focusElement = "Title";
+		$scope.printDiv = function(divName) {
+	  		var printContents = document.getElementById(divName).innerHTML;
+	  		var popupWin = window.open('', '_blank', 'width=1024,height=768');
+	  		popupWin.document.open();
+	  		popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="/modules/checklists/css/mychecklist.css" /></head><body onload="window.print()">' + printContents + '</html>');
+	  		popupWin.document.close();
+		} 
 		
-		// Checklist Edition
+		$scope.$watch('currentPage + numPerPage', function() {
+			if($scope.checklists){
+				var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+			    , end = begin + $scope.numPerPage;
+			    
+			    $scope.filteredChecklists = $scope.checklists.slice(begin, end);	
+			}
+	  	});
+	  	
+	  	$scope.addFavorites = function(checklist){
+	  		if($scope.user.favorites === undefined){
+	  			$scope.user.favorites = [];
+	  		}
+	  		
+	  		$scope.user.favorites.push(checklist.id);
+	  		
+	  		$http.post('/users', $scope.user).success(function(response) {
+				//OK
+			}).error(function(response) {
+				//$scope.user.favorites.pop();
+				//$scope.error = response.data.message;
+			});
+	  	};
+		
+		/******* View Options *************/
+		$scope.addItemTo = function(item, secIdx){
+			 $scope.workingOn.sections[secIdx].items.push({ content: item.content });
+		};
+		
+		$scope.addSectionTo = function(sec){
+			var section = { name: sec.name, description: sec.description, items: [] };
+			for(var i = 0; i < sec.items.length; i++)
+			{
+				section.items.push({ content: sec.items[i].content });
+			}
+			$scope.workingOn.sections.push(section);
+		};
+		
+		$scope.removeItem = function(section, itemIdx){
+			WorkingChecklist.removeItem(section, itemIdx);
+		};
+		
+		$scope.removeSection = function(secIdx){
+			WorkingChecklist.removeSection(secIdx);
+		};
+		
+		/******* Checklist Edition ********/
+		$scope.focusElement = "Title";
+		$scope.lastKeyPress = 0;
+		
 		$scope.onKeyDown = function(event){
 			//necesario para que funcione onTitleKeyDown
 		};
@@ -113,9 +231,9 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		//Title KeyDown
 		$scope.onTitleKeyDown = function(event){
 			if(event.keyCode == 13){
-				if($scope.checklist.sections.length == 0)
+				if($scope.workingOn.sections.length == 0)
 				{
-					$scope.checklist.sections.push({ name : "", items : [] });
+					$scope.workingOn.sections.push({ name : "", items : [] });
 				}
 				
 				$scope.focusElement = "SectionName";
@@ -129,9 +247,38 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				if(section.name != "")
 				{
 					$scope.focusElement = "SectionDesc";
-					$scope.secFocusIndex = $scope.checklist.sections.indexOf(section);
+					$scope.secFocusIndex = $scope.workingOn.sections.indexOf(section);
 				}
 			}
+		};
+		
+		//Section KeyDown
+		$scope.onSectionKeyDown = function(event, section, idx){
+			if(event.keyCode == 8) {
+				if((section.name == undefined 
+				|| section.name.trim().replace(/(\r\n|\n|\r)/gm,"") == "") 
+				&& section.items){
+					var idx = $scope.workingOn.sections.indexOf(section);
+					$scope.workingOn.sections.splice(idx,1);
+					event.preventDefault();
+					var jumpTo = idx-1;
+					$scope.secFocusIndex = jumpTo;
+					if($scope.secFocusIndex == -1){
+						$scope.focusElement = "Title";
+						$scope.secFocusIndex = 0;
+					}else{
+						if($scope.workingOn.sections[$scope.secFocusIndex].items){
+							jumpTo = $scope.workingOn.sections[$scope.secFocusIndex].items.length - 1;
+							$scope.itemFocusIndex = jumpTo;
+							if($scope.itemFocusIndex == -1){
+								$scope.focusElement = "SectionDesc";
+							}else{
+								$scope.focusElement = "Item";
+							}
+						}
+					}
+				}
+			}	
 		};
 		
 		//Section Desc KeyPress
@@ -148,8 +295,18 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 			}
 		};
 		
+		//Section Desc KeyDown
+		$scope.onSectionDescKeyDown = function(event, section, idx){
+			if(event.keyCode == 8) {
+				if((section.description == undefined 
+				|| section.description.trim().replace(/(\r\n|\n|\r)/gm,"") == "")){
+					$scope.focusElement = "SectionName";
+					$scope.secFocusIndex = idx;
+				}
+			}	
+		};
+		
 		//Item KeyDown
-		$scope.lastKeyPress = 0;
 		$scope.onItemKeyDown = function(event, section, item, idx){
 			var jumpTo = idx;
 			if($scope.lastKeyPress == 13 && event.keyCode == 13){
@@ -172,9 +329,10 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				else
 				{
 					//Jump to a new Section
-					$scope.checklist.sections.push({ name : "", items : [] });
+					section.items.pop();
+					$scope.workingOn.sections.push({ name : "", items : [] });
 					$scope.focusElement = "SectionName";
-					$scope.secFocusIndex = $scope.checklist.sections.length-1;
+					$scope.secFocusIndex = $scope.workingOn.sections.length-1;
 				}
 			}
 			else if(event.keyCode == 8) {
@@ -187,7 +345,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				$scope.itemFocusIndex = jumpTo;
 				if($scope.itemFocusIndex == -1){
 					$scope.focusElement = "SectionDesc";
-					$scope.secFocusIndex = $scope.checklist.sections.indexOf(section);
+					$scope.secFocusIndex = $scope.workingOn.sections.indexOf(section);
 				}else{
 					$scope.focusElement = "Item";
 				}
@@ -195,14 +353,5 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 			$scope.lastKeyPress = event.keyCode;
 		};
 		
-		$scope.createSection = function()
-		{
-			$scope.checklist.sections.push({ name : "", items : [] });
-		}
-		
-		$scope.createItem = function(section)
-		{
-			section.items.push({ name : "" });
-		}
 	}
 ]);

@@ -1,0 +1,22 @@
+<div class="sidebar content">
+    <div class="container-fluid" data-ng-controller="HeaderController">
+        <div data-ng-show="authentication.user">
+            <div data-ng-include="'/modules/checklists/views/working-checklist.client.view.html'"></div>
+        </div>
+        <div data-ng-hide="authentication.user" style="padding-top: calc(100% - 50%)">
+            <div class="row">
+                <div class="col-xs-8 col-xs-offset-2">
+                    <a href="/#!/signup" class="btn btn-primary">Sign Up for free</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-xs-offset-0">
+                    <span><small>Already have an account? <a href="/#!/signin">Sign In</a></small></span>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>Username 
+Password 
+Sign in  or  Sign up
+Forgot your password?

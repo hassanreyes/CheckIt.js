@@ -1,4 +1,4 @@
-<section data-ng-controller="ChecklistsController">
+<section data-ng-controller="ChecklistsController" ng-init="loadCategories()">
     <!--div class="page-header">
         <h1>New Checklist</h1>
     </div-->
@@ -13,60 +13,62 @@
                 <div class="form-group">
 					<!-- Checklist -->
                     <div class="controls">
-                    	
-                		<label class="control-label" for="parent">Checklist Category</label>
-                    	<ui-select id="parent" ng-model="category.id" theme="bootstrap" style="width: 300px;" required>
-							<ui-select-match placeholder="Select a category path">{{$select.selected.name}}</ui-select-match>
-							<ui-select-choices repeat="cat.id as cat in categories | filter: $select.search">
-							  	<span ng-bind-html="cat.name | highlight: $select.search"></span>
-							</ui-select-choices>
-						</ui-select>
+						
+						<div class="navbar navbar-default">
+						<div class="container" style="vertical-align: top">
+							<ul class="nav navbar-nav navbar-right">
+								<li><button type="button" class="btn btn-default navbar-btn" data-ng-click="create()">
+									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Create
+								</button></li>
+								<li>&nbsp;</li>
+								<li><button type="button" class="btn btn-default navbar-btn" data-ng-click="clear()">
+									<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Clear
+								</button></li>
+							</ul>
+							<label class="control-label" for="parent">Checklist Category</label>
+	                    	<ui-select id="parent" ng-model="category.id" theme="bootstrap" style="width: 300px; position: inline;" required>
+								<ui-select-match placeholder="Select a category path">{{$select.selected.name}}</ui-select-match>
+								<ui-select-choices repeat="cat.id as cat in categories | filter: $select.search">
+								  	<span ng-bind-html="cat.name | highlight: $select.search"></span>
+								</ui-select-choices>
+							</ui-select>
+							
+		                </div>
+						</div>
                     	
 						<div class="page-header">
 							<input type="text" id="name"
-								data-ng-model="checklist.name" data-ng-keydown="onTitleKeyDown($event)"
+								data-ng-model="workingOn.name" data-ng-keydown="onTitleKeyDown($event)" custom-autofocus="focusElement == 'Title'"
 								class="chklst_title" placeholder="My New Checklist Name" required/>
 						</div>
-						
 						<!--Sections-->
-						<ol data-ng-repeat="section in checklist.sections" class="list-group">
+						<ul data-ng-repeat="section in workingOn.sections" id="create_chklst_section_{{$index}}" style="list-style-type: none;">
 							<li class="list-group-item">
-							<div class="input-group">
-							<input type="text" class="chklst_section_name" placeholder="Section Name" 
-								data-ng-model="section.name" data-ng-keypress="onSectionKeyPress($event, section)" 
-								custom-autofocus="$index == secFocusIndex && focusElement == 'SectionName'"/>
-								<input type="text" class="chklst_section_desc" placeholder="Section Description" 
-								data-ng-model="section.description" data-ng-keypress="onSectionDescKeyPress($event, section)"
-								custom-autofocus="$index == secFocusIndex && focusElement == 'SectionDesc'"/>
-							<span class="input-group-addon"><button type="button" class="btn btn-default btn-sm pull-right" data-ng-click="removeSection(section)">
-								<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-							</button></span>
-							</div>
-							
-							<!--Items-->
-							<ol class="list-group">
-								<li data-ng-repeat="item in section.items" class="list-group-item">
-									<span class="badge pull-left">{{$index+1}}</span>&nbsp;<textarea class="chklst_item" placeholder="Item {{$index+1}}" 
-									data-ng-model="item.content" data-ng-keydown="onItemKeyDown($event, section, item, $index)" 
-									custom-autofocus="$index == itemFocusIndex && focusElement == 'Item'" msd-elastic >
-								</textarea>
-								</li>
-							</ol>
-							<div class="btn-group pull-right">
-								<button type="button" class="btn btn-default btn-sm" data-ng-click="createItem(section)">
-									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Item
-								</button>
-							</div>
-							</br>
+								<small><a data-ng-click="removeSection($index)"><span class="glyphicon glyphicon-remove chklst_remove highlight"></span></a></small>
+								<input type="text" class="chklst_section_name" placeholder="Section Name" 
+									data-ng-model="section.name" data-ng-keypress="onSectionKeyPress($event, section)"  data-ng-keydown="onSectionKeyDown($event, section, $index)"
+									custom-autofocus="$index == secFocusIndex && focusElement == 'SectionName'"/>
+									<input type="text" class="chklst_section_desc" placeholder="Section Description" 
+									data-ng-model="section.description" data-ng-keypress="onSectionDescKeyPress($event, section)" data-ng-keydown="onSectionDescKeyDown($event, section, $index)"
+									custom-autofocus="$index == secFocusIndex && focusElement == 'SectionDesc'"
+									role="group"/>
+								
+								<ul class="list-group" style="list-style-type: none;">
+									<li data-ng-repeat="item in section.items" id="create_chklst_item_{{$index}}">
+										<small><a data-ng-click="removeItem(section, $index)"><span class="glyphicon glyphicon-remove chklst_remove highlight"></span></a></small>
+										<!--span class="badge pull-left">{{$index+1}}</span>&nbsp;--><textarea class="chklst_item" placeholder="Item {{$index+1}}" 
+										data-ng-model="item.content" data-ng-keydown="onItemKeyDown($event, section, item, $index)" 
+										custom-autofocus="$index == itemFocusIndex && focusElement == 'Item'" msd-elastic >
+									</textarea>
+									</li>
+								</ul>
 							</li>
-						</ol>
-						<button type="button" class="btn btn-default btn-sm" data-ng-click="createSection()" data-ng-disabled="{{checklist.name.trim().lengtg == 0}}">
-							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Section
-						</button>
+						</ul>
+						
                     </div>
                 </div>
 				<!-- Navigation Bar -->
-                <div class="navbar navbar-default navbar-fixed-bottom">
+                <div class="navbar navbar-default">
 				<div class="container">
 					<ul class="nav navbar-nav navbar-left">
 						<li><button type="button" class="btn btn-default navbar-btn" data-ng-click="create()">
