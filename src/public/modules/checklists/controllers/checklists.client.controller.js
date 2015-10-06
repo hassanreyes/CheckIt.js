@@ -73,7 +73,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 			$scope.workingOn.category = $scope.category.id;
 			
 			//Validate, remove empty sections or items
-			if($scope.workingOn.sections){
+			if(!$scope.workingOn.sections || $scope.workingOn.sections.length > 0){
 				var sec = $scope.workingOn.sections[$scope.workingOn.sections.length - 1];
 				if(sec.name == ''){
 					$scope.workingOn.sections.pop();
