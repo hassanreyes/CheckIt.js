@@ -33,4 +33,9 @@ var CategorySchema = new Schema({
 
 CategorySchema.plugin(materializedPlugin);
 
-mongoose.model('Category', CategorySchema);
+var Category = mongoose.model('Category', CategorySchema);
+
+/**
+ * Insert initial values
+ * */
+//Category.findOne({name:'Software Engineering'})
