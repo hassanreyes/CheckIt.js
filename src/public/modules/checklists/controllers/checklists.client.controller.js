@@ -18,7 +18,15 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		$scope.maxSize = 10;
 		
 		$scope.initialize = function(){
-			$scope.clear();
+			//if comes from a new checklist menu
+			if($rootScope.workingOn == undefined){
+				$scope.clear();
+			}
+			else
+			{
+				//it comes from a uploaded file
+				$rootScope.workingOn = null;	
+			}
 		}
 		
 		var updateControllerChecklist = function(){
