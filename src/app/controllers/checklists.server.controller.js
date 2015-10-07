@@ -104,7 +104,7 @@ exports.list = function(req, res) {
  * Checklist middleware
  */
 exports.checklistByID = function(req, res, next, id) { 
-	Checklist.findById(id).populate('user', 'displayName').exec(function(err, checklist) {
+	Checklist.findById(id).populate('user', 'displayName').populate('category').exec(function(err, checklist) {
 		if (err) return next(err);
 		if (! checklist) return next(new Error('Failed to load Checklist ' + id));
 		req.checklist = checklist ;

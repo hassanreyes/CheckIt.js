@@ -8,6 +8,10 @@ angular.module('browse').config(['$stateProvider',
 		state('browse', {
 			url: '/browse',
 			templateUrl: 'modules/browse/views/browse.client.view.html'
+		}).
+		state('browseCategory', {
+			url: '/browse/:categoryId',
+			templateUrl: 'modules/browse/views/browse-category.client.view.html'
 		});
 	}
 ]);

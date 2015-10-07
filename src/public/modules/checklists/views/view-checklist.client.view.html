@@ -46,16 +46,17 @@
 	<div id="printable-view">
 		<div>
 			<h1 data-ng-bind="checklist.name"></h1>
+			<small>
+				<em class="text-muted">
+					Posted on
+					<span data-ng-bind="checklist.created | date:'mediumDate'"></span>
+					by
+					<span data-ng-bind="checklist.user.displayName"></span>
+					. Categorized as <a data-ng-href="#!/browse/{{checklist.category._id}}">{{checklist.category.name}}.</a>
+				</em>
+			</small>
 		</div>
-		<small>
-			<em class="text-muted">
-				Posted on
-				<span data-ng-bind="checklist.created | date:'mediumDate'"></span>
-				by
-				<span data-ng-bind="checklist.user.displayName"></span>
-			</em>
-		</small>
-		
+		<br/>
 		<!-- Sections -->
 		<ol data-ng-repeat="section in checklist.sections">
 			<li class="list-group-item section_item">

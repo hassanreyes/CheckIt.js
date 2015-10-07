@@ -22,6 +22,11 @@ angular.module('browse').controller('BrowseController', ['$scope', '$stateParams
 			});
 		};
 		
+		$scope.findCategory = function() {
+			$scope.find();
+			$scope.selectedCategory = $stateParams.categoryId;
+		};
+		
 		$scope.toggle = function(scope) {
 	      scope.toggle();
 	    };
@@ -43,10 +48,10 @@ angular.module('browse').controller('BrowseController', ['$scope', '$stateParams
 		  var treeElement = angular.element(document.querySelector('#CategoriesTree'));
 		  if (treeElement) {
 		    var treeScope = (typeof treeElement.scope === 'function') ? treeElement.scope() : undefined;
-		    if (treeScope && typeof treeScope.$childHead.collapseAll === 'function') {
-		      treeScope.collapseAll();
+		    if (treeScope && typeof treeScope.$$childHead.collapseAll === 'function') {
+		      treeScope.$$childHead.collapseAll();
 		    }
-		    treeElement.show();
+		    //treeElement.show();
 		  }
 		}, 200);
 	}
