@@ -118,6 +118,33 @@ var UserSchema = new Schema( {
 });
 
 /**
+ * History, visits by user
+ **/
+var HistorySchema = new Schema( {
+    user: {
+        type: Schema.ObjectId,
+        ref: 'User',
+        index: true
+    },
+    checklist: {
+        type: Schema.ObjectId,
+        ref: 'Checklist',
+        index: true
+    },
+    visited: {
+        type: Date
+    },
+    visits: {
+        type: Number,
+        default: 0
+    },
+    useCount: {
+        type: Number,
+        default: 0
+    }
+});
+
+/**
  * Hook a pre save method to hash the password
  */
 UserSchema.pre('save', function(next) {
@@ -170,6 +197,7 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 };
 
 mongoose.model('User', UserSchema);
+mongoose.model('History', HistorySchema);
 
 /**
  * Setup the admin user

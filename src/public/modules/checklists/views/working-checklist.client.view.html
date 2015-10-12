@@ -5,12 +5,14 @@
         	<li><a data-ng-click="clear()" title="Star over"><span class="glyphicon glyphicon-file"></span></a></li>
         	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
     		<li><a data-ng-click="create()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
-    		<li><a href="/#!/checklists/edit" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
+    		<!--li><a href="/#!/checklists/edit" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li-->
+        	<li><a data-ng-click="editNew()" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
         </ul>
     </div>
     
     <div class="navbar navbar-inverse" data-ng-show="workingOn.created != undefined">
         <ul class="nav navbar-nav">
+        	<li><a data-ng-click="new()" title="New Checklist"><span class="glyphicon glyphicon-file"></span></a></li>
         	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
     		<li><a data-ng-click="update()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
     		<li><a href="/#!/checklists/{{workingOn._id}}/edit" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li>

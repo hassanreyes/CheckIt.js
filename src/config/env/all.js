@@ -20,6 +20,7 @@ module.exports = {
 				'public/lib/angular-social/angular-social.css',
 			],
 			js: [
+				'public/lib/jquery/dist/jquery.mini.js',
 				'public/lib/es5-shim/es5-shim.min.js',
 				'public/lib/angular/angular.js',
 				'public/lib/angular-resource/angular-resource.js', 

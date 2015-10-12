@@ -1,8 +1,8 @@
 'use strict';
 
 // Checklists controller
-angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', 'Authentication', 'Checklists', 'Categories', '$upload', 'Parser', 'WorkingChecklist', 'Search', '$http',
-	function($scope, $rootScope, $stateParams, $location, Authentication, Checklists, Categories, $upload, Parser, WorkingChecklist, Search, $http) {
+angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Authentication', 'Checklists', 'Categories', 'History', '$upload', 'Parser', 'WorkingChecklist', 'Search', '$http',
+	function($scope, $rootScope, $stateParams, $location, $state, Authentication, Checklists, Categories, History, $upload, Parser, WorkingChecklist, Search, $http) {
 		$scope.authentication = Authentication;
 		$scope.user = Authentication.user;
 
@@ -64,7 +64,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				}
 				$scope.checklists = checklists;
 			});
-		}
+		};
 		
 		$scope.clear = function(){
 			WorkingChecklist.clear();
@@ -141,9 +141,24 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 
 		// Find existing Checklist
 		$scope.findOne = function() {
-			$scope.checklist = Checklists.get({ 
+			Checklists.get({ 
 				checklistId: $stateParams.checklistId
+				}, function(checklist){
+					$scope.checklist = checklist;
+					
+					//Update history; count visits
+					var hist = new History({userId: $scope.user._id, checklistId: $scope.checklist._id});
+					hist.$update();
+					
+				}, function(errResp){
+					//Nothing to do	
 			});
+			
+		};
+		
+		$scope.new = function(){
+			WorkingChecklist.clear();
+			$scope.workingOn = WorkingChecklist.currentChecklist();
 		};
 		
 		$scope.edit = function(){
@@ -151,7 +166,12 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				checklistId: $stateParams.checklistId
 			});	
 			
-			WorkingChecklist.setCurrentChecklist(checklist);
+			WorkingChecklist.setCurrentChecklist(checklist);	
+		};
+		
+		$scope.editNew = function(){
+			$rootScope.workingOn = WorkingChecklist.checklist;
+			$state.transitionTo('create');
 		};
 		
 		// Upload a checklist
@@ -196,28 +216,65 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 	  			$scope.user.favorites = [];
 	  		}
 	  		
-	  		$scope.user.favorites.push(checklist.id);
+	  		$scope.user.favorites.push(checklist._id);
 	  		
-	  		$http.post('/users', $scope.user).success(function(response) {
+	  		$http.put('/users', $scope.user).success(function(response) {
 				//OK
 			}).error(function(response) {
 				//$scope.user.favorites.pop();
 				//$scope.error = response.data.message;
 			});
 	  	};
+	  	
+	  	$scope.removeFavorites = function(checklist){
+  			if($scope.user.favorites){
+  				var index = $scope.user.favorites.indexOf(checklist._id);
+  				if(index >= 0)
+  				{
+	  				$scope.user.favorites.splice(index, 1);
+		  			if($scope.user.favorites.length == 0)
+		  			{
+		  				$scope.user.favorites = undefined;
+		  			}
+		  			
+		  			$http.put('/users', $scope.user).success(function(response) {
+						//OK
+					}).error(function(response) {
+						//$scope.user.favorites.pop();
+						//$scope.error = response.data.message;
+					});	
+  				}
+	  		}
+	  	};
+	  	
+	  	$scope.isFavorite = function(checklist){
+	  		if($scope.user.favorites === undefined)
+	  		{
+	  			return false;
+	  		}
+	  		return $scope.user.favorites.indexOf(checklist._id) >= 0;
+	  	};
 		
 		/******* View Options *************/
-		$scope.addItemTo = function(item, secIdx){
+		$scope.addItemTo = function(checklist, item, secIdx){
 			 $scope.workingOn.sections[secIdx].items.push({ content: item.content });
+			 
+			 //Update history; count visits
+			 var hist = new History({userId: $scope.user._id, checklistId: checklist._id, using: true});
+			 hist.$update();
 		};
 		
-		$scope.addSectionTo = function(sec){
+		$scope.addSectionTo = function(checklist, sec){
 			var section = { name: sec.name, description: sec.description, items: [] };
 			for(var i = 0; i < sec.items.length; i++)
 			{
 				section.items.push({ content: sec.items[i].content });
 			}
 			$scope.workingOn.sections.push(section);
+			
+			//Update history; count visits
+			 var hist = new History({userId: $scope.user._id, checklistId: checklist._id, using: true});
+			 hist.$update();
 		};
 		
 		$scope.removeItem = function(section, itemIdx){

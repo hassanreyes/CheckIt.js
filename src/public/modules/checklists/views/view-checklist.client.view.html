@@ -1,7 +1,7 @@
 <section data-ng-controller="ChecklistsController" data-ng-init="findOne()">
 	
-	<div class="navbar navbar-default">
-		<ul class="nav navbar-nav">
+	<div class="container-fluid" >
+		<ul class="list-inline">
 			<li data-ng-show="((authentication.user) && (authentication.user._id == checklist.user._id))">
 				<a title="Edit" href="/#!/checklists/{{checklist._id}}/edit">
 					<span class="glyphicon glyphicon-edit"></span>
@@ -20,80 +20,90 @@
 	        <li data-ng-show="((authentication.user) && (authentication.user._id == checklist.user._id))">
 	        	<a data-ng-click="" title="Share"><span class="glyphicon glyphicon-share"></span></a>
         	</li>
-        	<li data-ng-show="(authentication.user) && (checklist.favorites === undefined || checklist.favorites.indexOf(authentication.user._id) == -1)">
+    		<li data-ng-show="(authentication.user) && isFavorite(checklist)">
+	        	<a data-ng-click="removeFavorites(checklist)" title="Remove from Favorites"><span class="glyphicon glyphicon-heart" style="color: red;"></span></a>
+        	</li>
+    		<li data-ng-show="(authentication.user) && !isFavorite(checklist)">
 	        	<a data-ng-click="addFavorites(checklist)" title="Add to Favorites"><span class="glyphicon glyphicon-heart"></span></a>
+        	</li>	
+        	<li>
+        		
         	</li>
-        	<li data-ng-show="(authentication.user) && (checklist.favorites != undefined && checklist.favorites.indexOf(authentication.user._id) != -1)">
-	        	<a data-ng-click="removeFavorites(checklist)" title="Remove from Favorites"><span class="glyphicon glyphicon-heart" style="color: red;" hover-class="glyphicon glyphicon-minus"></span></a>
-        	</li>
-        </ul>
-        
-        <ul ng-social-buttons
-			class="pull-right vcenter" style="padding-top: 10px;"
-            data-url="'https://checkit-js-hassanreyes-1.c9.io/checklists/55498cc6e533328b0d1b298d'"
-            data-title="checklist.name"
-            data-description="checklist.description"
-            data-image="'https://checkit-js-hassanreyes-1.c9.io/modules/core/img/brand/logo.png'"
-            showcounts="true">
-            <li class="ng-social-facebook">Facebook</li>
-            <li class="ng-social-google-plus">Google+</li>
-            <li class="ng-social-twitter">Twitter</li>
-            <li class="ng-social-github" user="esvit" repository="ng-table">GitHub</li>
-            <li class="ng-social-linkedin">LinkedIn</li>
         </ul>
 	</div>
 	
-	<div id="printable-view">
-		<div>
-			<h1 data-ng-bind="checklist.name"></h1>
-			<small>
-				<em class="text-muted">
-					Posted on
-					<span data-ng-bind="checklist.created | date:'mediumDate'"></span>
-					by
-					<span data-ng-bind="checklist.user.displayName"></span>
-					. Categorized as <a data-ng-href="#!/browse/{{checklist.category._id}}">{{checklist.category.name}}.</a>
-				</em>
-			</small>
-		</div>
-		<br/>
-		<!-- Sections -->
-		<ol data-ng-repeat="section in checklist.sections">
-			<li class="list-group-item section_item">
-				<div class="btn-group dropdown onscreen_ctrl">
-					<button class="btn btn-default btn-xs dropdown-toggle highlight" type="button" data-toggle="dropdown" aria-expanded="false">
-						<span class="glyphicon glyphicon-tasks"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#"><span class="glyphicon glyphicon-trash"></span> Remove</a></li>
-						<li class="divider"></li>
-						<li><a data-ng-click="addSectionTo(section)"><span class="glyphicon glyphicon-plus"></span> Add to Working Checklist</a></li>
-					</ul>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="col-lg-10" style="background-color: #F0F0F0;">
+				<div id="printable-view">
+					<div>
+						<h1 data-ng-bind="checklist.name"></h1>
+						<small>
+							<em class="text-muted">
+								Posted on
+								<span data-ng-bind="checklist.created | date:'mediumDate'"></span>
+								by
+								<span data-ng-bind="checklist.user.displayName"></span>
+								. Categorized as <a data-ng-href="#!/browse/{{checklist.category._id}}">{{checklist.category.name}}.</a>
+							</em>
+						</small>
+					</div>
+					<br/>
+					<!-- Sections -->
+					<ol data-ng-repeat="section in checklist.sections">
+						<li class="list-group-item section_item">
+							<div class="btn-group dropdown onscreen_ctrl">
+								<button class="btn btn-default btn-xs dropdown-toggle highlight" type="button" data-toggle="dropdown" aria-expanded="false">
+									<span class="glyphicon glyphicon-tasks"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#"><span class="glyphicon glyphicon-trash"></span> Remove</a></li>
+									<li class="divider"></li>
+									<li><a data-ng-click="addSectionTo(checklist, section)"><span class="glyphicon glyphicon-plus"></span> Add to Working Checklist</a></li>
+								</ul>
+							</div>
+							<label class="chklst_section_name">{{section.name}}</label>
+								<small class="chklst_section_desc">{{section.description}}</small>
+							
+							<!--Items-->
+							<ol class="list-group">
+								<li data-ng-repeat="item in section.items" class="list-group-item">
+									<div class="btn-group dropdown onscreen_ctrl">
+										<button class="btn btn-default btn-xs dropdown-toggle highlight" type="button" data-toggle="dropdown" aria-expanded="false">
+											<span class="glyphicon glyphicon-tasks"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li class="dropdown-submenu">
+												<a href="#"><span class="glyphicon glyphicon-plus"></span> Add to</a>
+							                    <ul class="dropdown-menu">
+							                        <li data-ng-repeat="sec in workingOn.sections"><a href="#" data-ng-click="addItemTo(checklist, item, $index)">{{sec.name}}</a></li>
+							                    </ul>
+						                  	</li>
+										</ul>
+									</div>
+									<p class="chklst_item" style="display: inline;">{{item.content}}</p>
+								</li>
+							</ol>
+						</li>
+					</ol>
 				</div>
-				<label class="chklst_section_name">{{section.name}}</label>
-					<small class="chklst_section_desc">{{section.description}}</small>
-				
-				<!--Items-->
-				<ol class="list-group">
-					<li data-ng-repeat="item in section.items" class="list-group-item">
-						<div class="btn-group dropdown onscreen_ctrl">
-							<button class="btn btn-default btn-xs dropdown-toggle highlight" type="button" data-toggle="dropdown" aria-expanded="false">
-								<span class="glyphicon glyphicon-tasks"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu">
-								<li class="dropdown-submenu">
-									<a href="#"><span class="glyphicon glyphicon-plus"></span> Add to</a>
-				                    <ul class="dropdown-menu">
-				                        <li data-ng-repeat="sec in workingOn.sections"><a href="#" data-ng-click="addItemTo(item, $index)">{{sec.name}}</a></li>
-				                    </ul>
-			                  	</li>
-							</ul>
-						</div>
-						<p class="chklst_item" style="display: inline;">{{item.content}}</p>
-					</li>
-				</ol>
-			</li>
-		</ol>
+			</div>
+			<div class="col-xs-2">
+				<ul ng-social-buttons
+					class="pull-right vcenter" style="padding-top: 10px;"
+		            data-url="'https://checkit-js-hassanreyes-1.c9.io/checklists/55498cc6e533328b0d1b298d'"
+		            data-title="checklist.name"
+		            data-description="checklist.description"
+		            data-image="'https://checkit-js-hassanreyes-1.c9.io/modules/core/img/brand/logo.png'"
+		            showcounts="true">
+		            <li class="ng-social-facebook">Facebook</li>
+		            <li class="ng-social-google-plus">Google+</li>
+		            <li class="ng-social-twitter">Twitter</li>
+		            <li class="ng-social-github" user="esvit" repository="ng-table">GitHub</li>
+		            <li class="ng-social-linkedin">LinkedIn</li>
+		        </ul>
+			</div>
+		</div>
 	</div>
 	
 </section>

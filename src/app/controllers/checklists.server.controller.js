@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
 	Checklist = mongoose.model('Checklist'),
 	User = mongoose.model('User'),
 	Category = mongoose.model('Category'),
+	History = mongoose.model('History'),
 	_ = require('lodash'),
 	async = require("async");
 
@@ -182,4 +183,61 @@ exports.shareChecklist = function(req, res, next, id) {
 			// next();
 		}
 	});
+};
+
+/**
+ * Update the hitory information
+ * */
+exports.updateHistory = function(req, res){
+	if(req.body)
+	{
+		History.findOne({user: req.body.userId, checklist: req.body.checklistId}, function(err, entry) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				if(entry)
+				{
+					//Update
+					entry.visited = Date.now();
+					if(req.body.using)
+					{
+						entry.useCount++;
+					}
+					else
+					{
+						entry.visits++;
+					}
+					
+					entry.save(function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						}	
+					});	
+				}
+				else
+				{
+					//New
+					var hist = new History({ user: req.body.userId
+											, checklist: req.body.checklistId
+											, visited: Date.now()
+											, visits: 1
+											, useCount: (req.body.using) ? 1 : 0});
+					
+					hist.save(function(err) {
+						if (err) {
+							return res.status(400).send({
+								message: errorHandler.getErrorMessage(err)
+							});
+						}
+					});
+				}
+				
+				res.sendStatus(200);
+			}
+		});
+	}
 };

@@ -10,3 +10,13 @@ angular.module('users').factory('Users', ['$resource',
 		});
 	}
 ]);
+
+angular.module('users').factory('History', ['$resource',
+	function($resource) {
+		return $resource('history', {}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);

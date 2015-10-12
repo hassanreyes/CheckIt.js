@@ -29,6 +29,18 @@ angular.module('checklists').config(['$stateProvider',
 			url: '/search?query',
 			templateUrl: 'modules/checklists/views/result-search.client.view.html',
 			realoadOnSearch: true
+		}).
+		state('create', {
+			templateUrl: 'modules/checklists/views/create-checklist.client.view.html'
+		}).
+		state('add-favorites', {
+			url: '/users',
+			method: 'put'
+		}).
+		state('update-history', {
+			url: '/history',
+			method: 'put'
 		});
+		
 	}
 ]);

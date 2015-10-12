@@ -1,6 +1,6 @@
 'use strict';
 
-// Configuring the Articles module
+// Configuring the Browse module
 angular.module('browse').run(['Menus',
 	function(Menus) {
 		// Set top bar menu items

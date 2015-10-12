@@ -21,6 +21,8 @@ module.exports = function(app) {
 	app.route('/share/:shareId')
 		.get(checklists.share);
 		
+	app.route('/history').put(checklists.updateHistory);
+		
 	// Finish by binding the Checklist middleware
 	app.param('checklistId', checklists.checklistByID);
 	app.param('shareId', checklists.shareChecklist);

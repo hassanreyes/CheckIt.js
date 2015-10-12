@@ -6,14 +6,11 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
 		</button>
-		<a href="/#!/" class="navbar-brand">Check-It</a>
+		<a class="navbar-brand" href="" title="Check-It" ng-click="goto('home');">
+			<img src="modules/core/img/check_full_white.png" style="max-width:120px; margin-top: -7px;"/>
+		</a>
 	</div>
 	<nav class="collapse navbar-collapse" collapse="!isCollapsed" role="navigation">
-		<ul class="nav navbar-nav" >
-			<li>
-				<a href="#">Learn</a>
-			</li>
-		</ul>
 		<!--data-ng-if="menu.shouldRender(menu, authentication.user);"-->
 		<ul class="nav navbar-nav">
 			<li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.menuItemType" ui-route="{{item.uiRoute}}" class="{{item.menuItemClass}}" ng-class="{active: ($uiRoute)}" dropdown="item.menuItemType === 'dropdown'">
