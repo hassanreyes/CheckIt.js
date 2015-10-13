@@ -51,6 +51,14 @@ module.exports = function(app) {
 	// Setting the github oauth routes
 	app.route('/auth/github').get(passport.authenticate('github'));
 	app.route('/auth/github/callback').get(users.oauthCallback('github'));
+	
+	//Dashboard routes
+	//app.route('/dashboard/topFavorite').get(users.topFavorite);
+	app.route('/dashboard/topFavorite').get(users.db_topFavorite);
+	app.route('/dashboard/myChecklists').get(users.db_myChecklists);
+	app.route('/dashboard/lastVisited').get(users.db_lastVisited);
+	app.route('/dashboard/lastAdded').get(users.db_lastAdded);
+	app.route('/dashboard/recommended').get(users.db_recommended);
 
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);
