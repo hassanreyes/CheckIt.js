@@ -1,5 +1,5 @@
 <section data-ng-controller="ChecklistsController" data-ng-init="findOne()">
-	
+
 	<div class="container-fluid" >
 		<ul class="list-inline">
 			<li data-ng-show="((authentication.user) && (authentication.user._id == checklist.user._id))">
@@ -8,7 +8,7 @@
 				</a>
 			</li>
 			<li data-ng-show="((authentication.user) && (authentication.user._id == checklist.user._id))">
-				<a title="Remove" data-ng-click="remove();">
+				<a ng-click="openRemoveModal(checklist);" title="Remove">
 					<span class="glyphicon glyphicon-trash"></span>
 				</a>
 			</li>
@@ -31,6 +31,7 @@
         	</li>
         </ul>
 	</div>
+	
 	
 	<div class="container-fluid">
 		<div class="row-fluid">

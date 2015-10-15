@@ -31,24 +31,39 @@
 		<div>
 			<h3 class="chklst_title" style="color: white; text-align: left; color: darkgray;" data-ng-bind="workingOn.name" ></h3>
 		</div>
-	
-		<div ui-tree data-max-depth="2">
-		  <ol ui-tree-nodes ng-model="workingOn.sections">
-		    <li ng-repeat="section in workingOn.sections" id="work_chklst_section_{{$index}}" ui-tree-node class="section_item" >
-		    	</br>
-		    	<!--span ui-tree-handle class="glyphicon glyphicon-th" style="color: #DBDBDB;"></span-->
-				<small><a data-ng-click="removeSection($index)"><span class="glyphicon glyphicon-remove chklst_remove highlight-invert"></span></a></small>
-		        <small><h4 ui-tree-handle style="display: inline; background: #080808; color: silver;">{{section.name}}</h4></small>
-				<small>{{section.description}}</small>
-				<ol ui-tree-nodes ng-model="section.items">
-					<li ng-repeat="item in section.items" id="work_chklst_item_{{$index}}" ui-tree-node ng-model="section.items" style="background: #080808; border-bottom: 1px dotted gray; border-top: 0px; border-right: 0px; border-left: 0px;">
-						<!--span ui-tree-handle class="glyphicon glyphicon-th" style="color: #DBDBDB;"></span-->
-						<small><a data-ng-click="removeItem(section, $index)"><span class="pull-right glyphicon glyphicon-remove chklst_remove highlight-invert"></span></a></small>
-					    <small><p ui-tree-handle style="display: inline; text-align: justify; font-size: x-small; background: #080808; color: silver;">{{item.content}}</p></small>
-					</li>
-				</ol>
-		    </li>
-		  </ol>
+		
+		<div ng-show="workingOn.sections.length > 0">
+			<div ui-tree data-max-depth="2">
+			  <ol ui-tree-nodes ng-model="workingOn.sections">
+			    <li ng-repeat="section in workingOn.sections" id="work_chklst_section_{{$index}}" ui-tree-node class="section_item" >
+			    	</br>
+			    	<!--span ui-tree-handle class="glyphicon glyphicon-th" style="color: #DBDBDB;"></span-->
+					<small><a data-ng-click="removeSection($index)"><span class="glyphicon glyphicon-remove chklst_remove highlight-invert"></span></a></small>
+			        <small><h4 ui-tree-handle style="display: inline; background: #080808; color: silver;">{{section.name}}</h4></small>
+					<small>{{section.description}}</small>
+					<ol ui-tree-nodes ng-model="section.items">
+						<li ng-repeat="item in section.items" id="work_chklst_item_{{$index}}" ui-tree-node ng-model="section.items" style="background: #080808; border-bottom: 1px dotted gray; border-top: 0px; border-right: 0px; border-left: 0px;">
+							<!--span ui-tree-handle class="glyphicon glyphicon-th" style="color: #DBDBDB;"></span-->
+							<small><a data-ng-click="removeItem(section, $index)"><span class="pull-right glyphicon glyphicon-remove chklst_remove highlight-invert"></span></a></small>
+						    <small><p ui-tree-handle style="display: inline; text-align: justify; font-size: x-small; background: #080808; color: silver;">{{item.content}}</p></small>
+						</li>
+					</ol>
+			    </li>
+			  </ol>
+			</div>
+		</div>
+		
+		<div ng-show="workingOn.sections.length == 0">
+			<div class="well well-lg">
+				<p>
+					<strong>Add sections and items to your new checklists is easy:</strong>
+					<br/>
+					Click on the left button at any section or item, and then select <em>Add to Working checklist</em>.
+					Or add an item to a specific section.
+					<br/>
+					You can also manually edit your checklist using the list button at the top menu.
+				</p>
+			</div>
 		</div>
 		
 	</div>			

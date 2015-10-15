@@ -1,8 +1,8 @@
 'use strict';
 
 // Checklists controller
-angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Authentication', 'Checklists', 'Categories', 'History', '$upload', 'Parser', 'WorkingChecklist', 'Search', '$http',
-	function($scope, $rootScope, $stateParams, $location, $state, Authentication, Checklists, Categories, History, $upload, Parser, WorkingChecklist, Search, $http) {
+angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Authentication', 'Checklists', 'Categories', 'History', '$upload', 'Parser', 'WorkingChecklist', 'Search', '$http', '$modal', 
+	function($scope, $rootScope, $stateParams, $location, $state, Authentication, Checklists, Categories, History, $upload, Parser, WorkingChecklist, Search, $http, $modal) {
 		$scope.authentication = Authentication;
 		$scope.user = Authentication.user;
 
@@ -113,11 +113,33 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 						$scope.checklists.splice(i, 1);
 					}
 				}
+				
+				$location.path('checklists');
 			} else {
 				$scope.checklist.$remove(function() {
 					$location.path('checklists');
 				});
 			}
+		};
+		
+		$scope.openRemoveModal = function(chklst){
+			var modal = $modal.open({
+				animation: true,
+				templateUrl: '/modules/checklists/views/remove-modal-checklist.client.view.html',
+				controller: 'ChecklistsRemoveModalController',
+				size: 'sm',
+				resolve: {
+					item : function(){
+						return chklst;
+					}
+				}
+			});
+			
+			modal.result.then(function(checklist){
+				if(checklist != undefined){
+					$scope.remove(checklist);
+				}
+			});
 		};
 
 		// Update existing Checklist

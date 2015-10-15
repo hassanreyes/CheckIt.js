@@ -11,7 +11,10 @@
                     
                     <div class="panel panel-default">
                         <div class="panel-heading"><strong>My Favorite Checklists</strong></div>
-                        <div class="panel-body list-group">
+                        <div class="bg-info" ng-show="favorites === undefined || favorites.length == 0">
+                            <p class="text-center"><em> You have not favorites yet </em></p>
+                        </div>
+                        <div class="panel-body list-group" ng-show="favorites != undefined && favorites.length > 0">
                             <div data-ng-repeat="checklist in favorites">
                                 <a data-ng-href="#!/checklists/{{checklist._id}}" >
                         			<h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
@@ -34,7 +37,11 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading"><strong>My Checklists</strong></div>
-                        <div class="panel-body list-group">
+                        <div class="bg-info" ng-show="myChecklists === undefined || myChecklists.length == 0">
+                            <p class="text-center"><em> Don't you have any checklist yet?! </em></p>
+                            <p class="text-center">Com'on <a href="#!/checklists/create"> create one! </a></p>
+                        </div>
+                        <div class="panel-body list-group" ng-show="myChecklists != undefined && myChecklists.length > 0">
                             <div data-ng-repeat="checklist in myChecklists">
                                 <a data-ng-href="#!/checklists/{{checklist._id}}" >
                         			<h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
@@ -55,7 +62,11 @@
                 <div class="row">
                     <div class="panel panel-default">
                         <div class="panel-heading"><strong>Recently Visited Checklists</strong></div>
-                        <div class="panel-body list-group">
+                        <div class="bg-info" ng-show="visitedChecklists === undefined || visitedChecklists.length == 0">
+                            <p class="text-center"><em> Don't you have seen any checklist yet?! </em></p>
+                            <p class="text-center"><a href="#!/browse"> Browse our catalog! </a></p>
+                        </div>
+                        <div class="panel-body list-group" ng-show="visitedChecklists != undefined && visitedChecklists.length > 0">
                             <div data-ng-repeat="item in visitedChecklists">
                                 <a data-ng-href="#!/checklists/{{item.checklist._id}}" >
                         			<h4 class="list-group-item-heading" data-ng-bind="item.checklist.name"></h4>
