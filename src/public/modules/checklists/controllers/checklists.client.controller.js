@@ -27,11 +27,11 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				//it comes from a uploaded file
 				$rootScope.workingOn = null;	
 			}
-		}
+		};
 		
 		var updateControllerChecklist = function(){
 			$scope.workingOn = WorkingChecklist.currentChecklist();
-		}
+		};
 		
 		WorkingChecklist.registerObserverCallback(updateControllerChecklist);
 		
@@ -63,6 +63,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 					checklists[i] = searchResult.results[i].obj;
 				}
 				$scope.checklists = checklists;
+				$scope.filteredChecklists = $scope.checklists.slice(0, $scope.numPerPage);
 			});
 		};
 		
@@ -152,6 +153,16 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				$scope.error = errorResponse.data.message;
 			});
 		};
+		
+		$scope.findFavorites = function() {
+			$http.get("dashboard/topFavorite", $scope.user).success(function(result){
+				if(result != undefined && result.favorites != undefined)
+				{
+					$scope.checklists = result.favorites;	
+					$scope.filteredChecklists = $scope.checklists.slice(0, $scope.numPerPage);
+				}
+			});
+		};
 
 		// Find a list of Checklists
 		$scope.find = function() {
@@ -211,7 +222,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 					$scope.$apply(function(){
 						$location.path('/checklists/create');
 					});
-				}
+				};
 				reader.readAsText(file);
 			}
 		};
@@ -222,7 +233,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 	  		popupWin.document.open();
 	  		popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="/modules/checklists/css/mychecklist.css" /></head><body onload="window.print()">' + printContents + '</html>');
 	  		popupWin.document.close();
-		} 
+		};
 		
 		$scope.$watch('currentPage + numPerPage', function() {
 			if($scope.checklists){
@@ -241,7 +252,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 	  		$scope.user.favorites.push(checklist._id);
 	  		
 	  		$http.put('/users', $scope.user).success(function(response) {
-				//OK
+	  			Authentication.user = response;
 			}).error(function(response) {
 				//$scope.user.favorites.pop();
 				//$scope.error = response.data.message;
@@ -260,7 +271,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		  			}
 		  			
 		  			$http.put('/users', $scope.user).success(function(response) {
-						//OK
+		  				Authentication.user = response;
 					}).error(function(response) {
 						//$scope.user.favorites.pop();
 						//$scope.error = response.data.message;

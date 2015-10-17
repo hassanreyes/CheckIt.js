@@ -8,89 +8,35 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
 	Checklist = mongoose.model('Checklist'),
+	Category = mongoose.model('Category'),
 	History = mongoose.model('History');
 
 /**
  * Get top N favorite checklists (sort by visited desc)
  */
-exports.db_topFavorite = function(req, res) {
+
+exports.listFavorites = function(req, res) {
     
     var query = { '_id' : req.user.id };
 	
-	User.find(query).populate('favorites').limit(10).sort('-created').exec(function(err, favorites) {
+	User.findOne(query).select('favorites').populate('favorites').sort('-created').exec(function(err, favorites) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
 			
-			var options = {
+			var options = [{
 				path: 'favorites.user',
-				model: 'User'
-			};
+				model: 'User',
+				select: '_id displayName'
+			},{
+				path: 'favorites.category',
+				model: 'Category',
+				select: '_id name'
+			}];
 			
-			User.populate(favorites, options, function(err, users){
-				if (err) {
-					return res.status(400).send({
-						message: errorHandler.getErrorMessage(err)
-					});
-				} else {
-					
-					options = {
-						path: 'favorites.checklist',
-						model: 'Checklist'
-					};
-					
-					User.populate(users, options, function(err, checklists){
-						if (err) {
-							return res.status(400).send({
-								message: errorHandler.getErrorMessage(err)
-							});
-						} else {
-							res.jsonp(checklists);	
-						}
-					});
-				}
-			});
-		}
-	});
-	
-};
-
-
-exports.db_myChecklists = function(req, res){
-	
-	var query = { 'user' : req.user.id };
-	
-	Checklist.find(query).populate('user', 'displayName').populate('category').limit(10).sort('-created').exec(function(err, checklists) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(checklists);
-		}
-	});
-	
-};
-
-exports.db_lastVisited = function(req, res){
-	
-	var query = { 'user' : req.user.id };
-	
-	History.find(query).populate('user', 'displayName').limit(10).sort('-visited').exec(function(err, history) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			
-			var options = {
-				path: 'checklist',
-				model: 'Checklist'
-			};
-			
-			User.populate(history, options, function(err, checklists){
+			Checklist.populate(favorites, options, function(err, checklists){
 				if (err) {
 					return res.status(400).send({
 						message: errorHandler.getErrorMessage(err)
@@ -101,11 +47,15 @@ exports.db_lastVisited = function(req, res){
 			});
 		}
 	});
+	
 };
 
-exports.db_lastAdded = function(req, res){
 
-	Checklist.find().populate('user', 'displayName').populate('checklist').populate('category').limit(20).sort('-created').exec(function(err, checklists) {
+exports.myChecklists = function(req, res){
+	
+	var query = { 'user' : req.user.id };
+	
+	Checklist.find(query).populate('user', 'displayName').populate('category').limit(11).sort('-created').exec(function(err, checklists) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -117,6 +67,56 @@ exports.db_lastAdded = function(req, res){
 	
 };
 
-exports.db_recommended = function(req, res){
+exports.lastVisited = function(req, res){
+	
+	var query = { 'user' : req.user._id };
+	
+	History.find(query).populate('checklist').limit(10).sort('-visited').exec(function(err, history){
+	
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			
+			var options = [{
+				path: 'checklist.user',
+				model: 'User',
+				select: '_id displayName'
+			},{
+				path: 'checklist.category',
+				model: 'Category',
+				select: '_id name'
+			}];
+			
+			Checklist.populate(history, options, function(err, checklists){
+				if (err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					res.jsonp(checklists);
+				}
+			});
+		}
+		
+	});
+};
+
+exports.lastAdded = function(req, res){
+
+	Checklist.find().populate('user', 'displayName').populate('checklist').populate('category').limit(21).sort('-created').exec(function(err, checklists) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(checklists);
+		}
+	});
+	
+};
+
+exports.recommended = function(req, res){
 	
 };

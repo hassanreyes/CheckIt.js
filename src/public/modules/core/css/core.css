@@ -1,3 +1,10 @@
+body { 
+    background-image: url(modules/core/img/brand/logo_90x77.png); 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    background-position: center;
+}
+
 .content {
 	margin-top: 50px;
 }
@@ -111,3 +118,4 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+

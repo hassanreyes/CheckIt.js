@@ -21,29 +21,29 @@ angular.module('users').controller('DashboardController', ['$scope', '$http', '$
 		
 		$scope.getFavorite = function(){
 			$http.get("dashboard/topFavorite", $scope.user).success(function(result){
-				if(result.length && result.length > 0)
+				if(result != undefined && result.favorites != undefined)
 				{
-					$scope.favorites = result[0].favorites;	
+					$scope.favorites = result.favorites;	
 				}
 			});
-		}
+		};
 		
 		$scope.getMyChecklist = function(){
 			$http.get("dashboard/myChecklists", $scope.user).success(function(result){
 				$scope.myChecklists = result;
 			});
-		}
+		};
 		
 		$scope.getLastVisited = function(){
 			$http.get("dashboard/lastVisited", $scope.user).success(function(result){
 				$scope.visitedChecklists = result;
 			});
-		}
+		};
 		
 		$scope.getLastAdded = function(){
 			$http.get("dashboard/lastAdded", $scope.user).success(function(result){
 				$scope.addedChecklists = result;
 			});
-		}
+		};
 	}
 ]);

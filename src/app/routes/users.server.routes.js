@@ -54,11 +54,11 @@ module.exports = function(app) {
 	
 	//Dashboard routes
 	//app.route('/dashboard/topFavorite').get(users.topFavorite);
-	app.route('/dashboard/topFavorite').get(users.db_topFavorite);
-	app.route('/dashboard/myChecklists').get(users.db_myChecklists);
-	app.route('/dashboard/lastVisited').get(users.db_lastVisited);
-	app.route('/dashboard/lastAdded').get(users.db_lastAdded);
-	app.route('/dashboard/recommended').get(users.db_recommended);
+	app.route('/dashboard/topFavorite').get(users.listFavorites);
+	app.route('/dashboard/myChecklists').get(users.myChecklists);
+	app.route('/dashboard/lastVisited').get(users.lastVisited);
+	app.route('/dashboard/lastAdded').get(users.lastAdded);
+	app.route('/dashboard/recommended').get(users.recommended);
 
 	// Finish by binding the user middleware
 	app.param('userId', users.userByID);

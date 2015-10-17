@@ -43,6 +43,10 @@ angular.module('users').config(['$stateProvider',
 		}).
 		state('dashboard', {
 			templateUrl: 'modules/users/views/user.dashboard.client.view.html'
+		}).
+		state('favorites', {
+			url: '/favorites',
+			templateUrl: 'modules/users/views/favorites.client.view.html'
 		});
 	}
 ]);

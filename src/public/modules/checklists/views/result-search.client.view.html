@@ -3,7 +3,7 @@
         <h3>Search Result for {{searchQuery}}</h3>
     </div>
     <div class="list-group">
-        <div data-ng-repeat="checklist in checklists | orderBy: 'category.name' | groupBy: 'category.name'">
+        <div data-ng-repeat="checklist in filteredChecklists | orderBy: 'category.name' | groupBy: 'category.name'">
             <a data-ng-href="#!/browse/{{checklist.category._id}}" ng-show="checklist.group_by_CHANGED">
                 <h3 ng-show="checklist.group_by_CHANGED">{{checklist.category.name}}</h2>
             </a>
@@ -18,4 +18,7 @@
         </a>
         </div>
     </div>
+    
+    <pagination ng-model="currentPage" total-items="checklists.length" max-size="maxSize" boundary-links="true">
+            </pagination>
 </section>

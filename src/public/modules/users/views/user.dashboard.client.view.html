@@ -15,7 +15,7 @@
                             <p class="text-center"><em> You have not favorites yet </em></p>
                         </div>
                         <div class="panel-body list-group" ng-show="favorites != undefined && favorites.length > 0">
-                            <div data-ng-repeat="checklist in favorites">
+                            <div data-ng-repeat="checklist in favorites | limitTo:5 ">
                                 <a data-ng-href="#!/checklists/{{checklist._id}}" >
                         			<h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
                         			<small class="list-group-item-text cklst_item">
@@ -29,7 +29,7 @@
                         			</small>
                                 </a>
                             </div>
-                            <a data-ng-href="#!/checklists/{{checklist._id}}" >More...</a>
+                            <a ng-show="favorites.length > 5" data-ng-href="#!/favorites" >More...</a>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                             <p class="text-center">Com'on <a href="#!/checklists/create"> create one! </a></p>
                         </div>
                         <div class="panel-body list-group" ng-show="myChecklists != undefined && myChecklists.length > 0">
-                            <div data-ng-repeat="checklist in myChecklists">
+                            <div data-ng-repeat="checklist in myChecklists | limitTo:10">
                                 <a data-ng-href="#!/checklists/{{checklist._id}}" >
                         			<h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
                         			<small class="list-group-item-text cklst_item">
@@ -54,7 +54,7 @@
                         			</small>
                                 </a>
                             </div>
-                            <a data-ng-href="#!/checklists/{{checklist._id}}" >More...</a>
+                            <a ng-show="myChecklists.length > 10" data-ng-href="#!/checklists" >More...</a>
                         </div>
                     </div>
                 </div>
@@ -67,19 +67,18 @@
                             <p class="text-center"><a href="#!/browse"> Browse our catalog! </a></p>
                         </div>
                         <div class="panel-body list-group" ng-show="visitedChecklists != undefined && visitedChecklists.length > 0">
-                            <div data-ng-repeat="item in visitedChecklists">
-                                <a data-ng-href="#!/checklists/{{item.checklist._id}}" >
-                        			<h4 class="list-group-item-heading" data-ng-bind="item.checklist.name"></h4>
+                            <div data-ng-repeat="history in visitedChecklists">
+                                <a data-ng-href="#!/checklists/{{history.checklist._id}}" >
+                        			<h4 class="list-group-item-heading" data-ng-bind="history.checklist.name"></h4>
                         			<small class="list-group-item-text cklst_item">
                         				Visited on
-                        				<span data-ng-bind="item.visited | date:'medium'"></span>
+                        				<span data-ng-bind="history.visited | date:'medium'"></span>
                         				Posted by
-                        				<span data-ng-bind="item.user.displayName"></span>
+                        				<span data-ng-bind="history.checklist.user.displayName"></span>
                         				<hr class="cklsts_separator">
                         			</small>
                                 </a>
                             </div>
-                            <a data-ng-href="#!/checklists/{{checklist._id}}" >More...</a>
                         </div>
                     </div>
                 </div>
@@ -105,7 +104,7 @@
                         </div>
                     </div>
                     <br/>
-                    <a data-ng-href="#!/checklists/{{checklist._id}}" >More...</a>
+                    <a data-ng-href="#!/browse" >More...</a>
                 </div>
                 <!-- Recomended (top 10,  recently visited & favorites, updated DESC) -->
                 <!--div class="row">

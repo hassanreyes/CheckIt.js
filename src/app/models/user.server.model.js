@@ -112,7 +112,7 @@ var UserSchema = new Schema( {
         default: ['inactive']
     },
     favorites: [{ 
-        type: Schema.ObjectId,
+        type: Schema.ObjectId, 
         ref: 'Checklist'
     }]
 });
@@ -196,16 +196,29 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 	});
 };
 
+/**
+ * Remove lastVisited array from the returned (to browser) JSON object
+ * */
+// UserSchema.set('toJSON', { transform : function(doc, ret, options){
+//     delete ret.lastVisited;
+//     return ret;
+// }});
+
 mongoose.model('User', UserSchema);
 mongoose.model('History', HistorySchema);
 
 /**
- * Setup the admin user
+ * Setup code
  */
- var User = mongoose.model('User')
- var user = new User( { 
-     firstName : 'Hassan', 
-     lastName : 'Reyes', 
+var User = mongoose.model('User');
+var History = mongoose.model('History');
+
+/**
+ * Create Admin user if not
+ * */
+var user = new User( { 
+     firstName : 'Admin', 
+     lastName : '.', 
      displayName : 'Administrator', 
      username: 'Admin', 
      password : 'admin123', 
@@ -215,10 +228,45 @@ mongoose.model('History', HistorySchema);
      provider : 'local'
  });
 
- User.findUniqueUsername(user.username, '', function(adminUser){
-   if(!adminUser){
-       user.save(function(err, adminUser){
-           console.log(err); 
+User.findOne({ username : user.username}).exec(function(err, adminUser){
+    if(err){ }
+    else {
+        if(!adminUser){
+        user.save(function(err, adminUser){
+            if(err){  console.error(err); }
+            else{
+                //Update all current checklist creator user, to use this
+                var conditions = {  }
+                     , update = { $set: { user: adminUser._id }}
+                     , options = { multi: true };
+                    
+                Checklist.update(conditions, update, options, function(err, numAffected) {
+                    if(err){
+                        console.error('Updating existing checklists: ' + err);
+                    }
+                    console.log('Updating existing checklists: User Records updated: ' + numAffected);  
+                });
+            }
          });
-   } 
+        }
+    }
  });
+ 
+/* Clear all User's favorites */
+//  var conditions = {  }
+//   , update = { $set: { favorites: [] }}
+//   , options = { multi: true };
+
+// User.update(conditions, update, options, function(err, numAffected) {
+//     if(err){
+//         console.error('Clear Favorites: ' + err);
+//     }
+//     console.log('Clear Favorites: User Records updated: ' + numAffected);  
+// });
+
+
+// History.remove({}).exec(function(err){
+//     if(err) { console.error('Clearing Histroy: ' + err); }
+//     else { console.log('Clearing Histroy'); }
+// });
+ 
