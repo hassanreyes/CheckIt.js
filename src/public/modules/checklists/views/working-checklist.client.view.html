@@ -1,25 +1,16 @@
-<section data-ng-controller="ChecklistsController" ng-init="loadCategories();">
+<section ng-controller="WorkingChecklistsController" ng-init="init()">
 	<h4>Outline - <small>Working Checklist</small></h4>
-    <div class="navbar navbar-inverse" data-ng-show="workingOn.created == undefined">
-        <ul class="nav navbar-nav">
-        	<li><a data-ng-click="clear()" title="Star over"><span class="glyphicon glyphicon-file"></span></a></li>
-        	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
-    		<li><a data-ng-click="create()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
-    		<!--li><a href="/#!/checklists/edit" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li-->
-        	<li><a data-ng-click="editNew()" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
-        </ul>
+    
+    <div class="navbar navbar-inverse">
+	    <ul class="nav navbar-nav">
+	    	<li><a data-ng-click="new()" title="New"><span class="glyphicon glyphicon-file"></span></a></li>
+	    	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
+			<li><a data-ng-click="save()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
+	    	<li><a data-ng-click="edit()" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
+	    </ul>
     </div>
     
-    <div class="navbar navbar-inverse" data-ng-show="workingOn.created != undefined">
-        <ul class="nav navbar-nav">
-        	<li><a data-ng-click="new()" title="New Checklist"><span class="glyphicon glyphicon-file"></span></a></li>
-        	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
-    		<li><a data-ng-click="update()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
-    		<li><a href="/#!/checklists/{{workingOn._id}}/edit" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
-        </ul>
-    </div>
-    
-    <ui-select id="parent" ng-model="category.id" on-select="categorySelected();" theme="bootstrap" style="width: 200px;" required>
+    <ui-select id="parent" ng-model="user.workingOn.checklist.category" on-select="categorySelected();" theme="bootstrap" style="width: 200px;" required>
 		<ui-select-match placeholder="Select a category path">{{$select.selected.name}}</ui-select-match>
 		<ui-select-choices repeat="cat.id as cat in categories | filter: $select.search">
 		  	<span ng-bind-html="cat.name | highlight: $select.search"></span>
@@ -29,13 +20,13 @@
 	<div id="printable-working">
 		</br>
 		<div>
-			<h3 class="chklst_title" style="color: white; text-align: left; color: darkgray;" data-ng-bind="workingOn.name" ></h3>
+			<h3 class="chklst_title" style="color: white; text-align: left; color: darkgray;" data-ng-bind="user.workingOn.checklist.name" ></h3>
 		</div>
 		
-		<div ng-show="workingOn.sections.length > 0">
+		<div ng-show="user.workingOn.checklist.sections.length > 0">
 			<div ui-tree data-max-depth="2">
-			  <ol ui-tree-nodes ng-model="workingOn.sections">
-			    <li ng-repeat="section in workingOn.sections" id="work_chklst_section_{{$index}}" ui-tree-node class="section_item" >
+			  <ol ui-tree-nodes ng-model="user.workingOn.checklist.sections">
+			    <li ng-repeat="section in user.workingOn.checklist.sections" id="work_chklst_section_{{$index}}" ui-tree-node class="section_item" >
 			    	</br>
 			    	<!--span ui-tree-handle class="glyphicon glyphicon-th" style="color: #DBDBDB;"></span-->
 					<small><a data-ng-click="removeSection($index)"><span class="glyphicon glyphicon-remove chklst_remove highlight-invert"></span></a></small>
@@ -53,7 +44,7 @@
 			</div>
 		</div>
 		
-		<div ng-show="workingOn.sections.length == 0">
+		<div ng-show="user.workingOn.checklist.sections.length == 0">
 			<div class="well well-lg">
 				<p>
 					<strong>Add sections and items to your new checklists is easy:</strong>
@@ -66,6 +57,5 @@
 			</div>
 		</div>
 		
-	</div>			
-	
+	</div>
 </section>

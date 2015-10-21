@@ -17,6 +17,10 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		$scope.numPerPage = 10,
 		$scope.maxSize = 10;
 		
+		$rootScope.$watch('user', function () {
+			$scope.workingOn = $rootScope.user.workingOn.checklist;
+		}, true);
+		
 		$scope.initialize = function(){
 			//if comes from a new checklist menu
 			if($rootScope.workingOn == undefined){
@@ -126,7 +130,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		$scope.openRemoveModal = function(chklst){
 			var modal = $modal.open({
 				animation: true,
-				templateUrl: '/modules/checklists/views/remove-modal-checklist.client.view.html',
+				templateUrl: '/modules/checklists/views/modals/remove-modal-checklist.client.view.html',
 				controller: 'ChecklistsRemoveModalController',
 				size: 'sm',
 				resolve: {
@@ -174,6 +178,9 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 
 		// Find existing Checklist
 		$scope.findOne = function() {
+			
+			$scope.workingOn = $rootScope.user.workingOn.checklist;
+			
 			Checklists.get({ 
 				checklistId: $stateParams.checklistId
 				}, function(checklist){
@@ -290,7 +297,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		
 		/******* View Options *************/
 		$scope.addItemTo = function(checklist, item, secIdx){
-			 $scope.workingOn.sections[secIdx].items.push({ content: item.content });
+			 $rootScope.user.workingOn.checklist.sections[secIdx].items.push({ content: item.content });
 			 
 			 //Update history; count visits
 			 var hist = new History({userId: $scope.user._id, checklistId: checklist._id, using: true});
@@ -303,7 +310,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 			{
 				section.items.push({ content: sec.items[i].content });
 			}
-			$scope.workingOn.sections.push(section);
+			$rootScope.user.workingOn.checklist.sections.push(section);
 			
 			//Update history; count visits
 			 var hist = new History({userId: $scope.user._id, checklistId: checklist._id, using: true});

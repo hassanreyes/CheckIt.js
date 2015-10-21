@@ -52,5 +52,23 @@ exports.update = function(req, res) {
  * Send User
  */
 exports.me = function(req, res) {
-	res.json(req.user || null);
+	
+	if(req.user != undefined)
+	{
+		User.findOne({
+			_id: req.user._id
+		}).exec(function(err, user) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				res.json(user);
+			}
+		});
+	}
+	else
+	{
+		res.json(req.user || null);	
+	}
 };

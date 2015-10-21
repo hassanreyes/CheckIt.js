@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	Checklist = mongoose.model('Checklist'),
+	Section = mongoose.model('Section'),
 	crypto = require('crypto');
 
 /**
@@ -114,7 +115,61 @@ var UserSchema = new Schema( {
     favorites: [{ 
         type: Schema.ObjectId, 
         ref: 'Checklist'
-    }]
+    }],
+    //On screen Working copy 
+    workingOn: {
+        //Time of last auto-saved modification 
+        updated: Date,
+        //On screen working copy of a checklist
+        checklist: {
+            id: {
+                type: Schema.ObjectId,
+                index: true
+            },
+            name: {
+                type: String,
+                default: 'My new Checklist',
+                trim: true
+            },
+            description: {
+                type: String,
+                trim: true
+            },
+            reference: {
+                type: String,
+                trim: true
+            },
+            language: {
+                type: String,
+                default: 'en'
+            },
+        	category: {
+                type: Schema.ObjectId,
+                ref: 'Category'
+            },
+            sections: [
+            {
+                name: {
+                    type: String,
+                    default: '',
+                    required: 'Please fill Checklist name',
+                    trim: true
+                },
+        	    description: {
+                    type: String,
+                    trim: true
+                },
+                items: [
+                {
+                    content: {
+                        type: String,
+                        default: '',
+                        trim: true
+                    }
+                }]
+            }],
+        }
+    }
 });
 
 /**

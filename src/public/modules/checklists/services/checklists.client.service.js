@@ -37,15 +37,17 @@ angular.module('checklists').factory('Parser', ['Checklists',
 
 		// Public API
 		return {
-			parse: function(text) {
+			parse: function(text, checklist) {
 				
 				var metadata = {};
 				
-				var checklist = new Checklists ({
-					name : 'Untitled',
-					description : null,
-					sections : []
-				});
+				if(!checklist){
+					checklist = {
+						name : 'Untitled',
+						description : null,
+						sections : []
+					};
+				}
 				
 				var lines = text.split("\n");
 				

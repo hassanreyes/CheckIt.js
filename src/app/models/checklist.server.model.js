@@ -111,7 +111,22 @@ var ChecklistSchema = new Schema( {
         }],
         default: 'draft'
     },
-	sections: [SectionSchema]
+	sections: [SectionSchema],
+	collaborators: [
+	    {
+	        user : {
+	          type: Schema.ObjectId,
+	          ref: 'User'
+	        },
+	        access: {
+                type: [{
+                    type: String,
+                    enum: [ 'view', 'comment', 'edit' ]
+                }],
+                default: 'view'
+            }
+	    }
+    ]
 });
 
 // give our schema text search capabilities
