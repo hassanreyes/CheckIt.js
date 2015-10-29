@@ -40,6 +40,14 @@ angular.module('checklists').config(['$stateProvider',
 		state('update-history', {
 			url: '/history',
 			method: 'put'
+		}).
+		state('workingOn', {
+			url: '/workingOn',
+			templateUrl: 'modules/checklists/views/new-edit-checklist.client.view.html'
+		}).
+		state('workingOn-create', {
+			url: '/workingOn/create',
+			templateUrl: 'modules/checklists/views/new-edit-checklist.client.view.html'
 		});
 		
 	}

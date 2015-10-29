@@ -22,6 +22,7 @@ var fs = require('fs'),
 	config = require('./config'),
 	consolidate = require('consolidate'),
 	path = require('path');
+	
 
 module.exports = function(db) {
 	// Initialize express app
@@ -158,6 +159,6 @@ module.exports = function(db) {
 		return httpsServer;
 	}
 
-	// Return Express server instance
+	// // Return Express server instance
 	return app;
 };

@@ -146,7 +146,7 @@ exports.search = function(req, res, next, query){
 			};
 			
 			async.each(checklists.results, iter, function(err){
-				console.log(JSON.stringify(checklists));
+				//console.log(JSON.stringify(checklists));
 				res.json(checklists);
 			});
 		}

@@ -2,7 +2,8 @@
 /**
  * Module dependencies.
  */
-var init = require('./config/init')(),
+var http = require('http'),
+	init = require('./config/init')(),
 	config = require('./config/config'),
 	mongoose = require('mongoose'),
 	chalk = require('chalk');
@@ -27,10 +28,15 @@ var app = require('./config/express')(db);
 require('./config/passport')();
 
 // Start the app by listening on <port>
-app.listen(config.port);
+var server = app.listen(config.port);
 
 // Expose app
 exports = module.exports = app;
 
 // Logging initialization
 console.log('MEAN.JS application started on port ' + config.port);
+
+// Attach socket 
+require('./config/socket')(server);
+
+console.log('Socket attached and listening');

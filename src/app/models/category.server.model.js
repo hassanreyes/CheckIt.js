@@ -38,4 +38,20 @@ var Category = mongoose.model('Category', CategorySchema);
 /**
  * Insert initial values
  * */
-//Category.findOne({name:'Software Engineering'})
+// Category.findOne({name:'Construction'}).exec(function(error, cat){
+// 	cat.getAncestors(function(err, tree){
+// 		for(var item in tree){
+// 			console.log(item._doc.name);
+// 		}	
+// 	});
+// });
+
+Category.GetRoots({name:'Java'}).then(function(error, root){
+	root.getChildren().then(function (err, children) {
+        console.log( Category.toTree(children) );
+        // or only shown name
+        console.log( Category.toTree(children, { name: 1 }) );
+    });	
+});
+
+

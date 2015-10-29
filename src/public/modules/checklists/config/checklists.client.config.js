@@ -8,7 +8,7 @@ angular.module('checklists').run(['Menus',
 		Menus.addMenuItem('topbar', 'Checklists', 'checklists', 'dropdown', '/checklists(/create)?', false);
 		Menus.addSubMenuItem('topbar', 'checklists', 'My Favorites', 'favorites');
 		Menus.addSubMenuItem('topbar', 'checklists', 'My Checklists', 'checklists');
-		Menus.addSubMenuItem('topbar', 'checklists', 'New Checklist', 'checklists/create');
+		Menus.addSubMenuItem('topbar', 'checklists', 'New Checklist', 'workingOn/create');
 		Menus.addSubMenuItem('topbar', 'checklists', 'Upload', 'checklists/upload');
 	}
 ]);

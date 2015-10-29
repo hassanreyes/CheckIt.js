@@ -7,6 +7,7 @@ angular.module('core').run(['Menus', '$rootScope', 'Categories', 'Authentication
 		//menuId, menuItemTitle, menuItemURL, menuItemType, menuItemUIRoute, isPublic, roles, position
 		Menus.addMenuItem('topbar', 'Learn', 'learn', 'item', 'learn', true);
 		
+		//Setup user as a global variable
 		$rootScope.user = Authentication.user;
 		
 		var updateUser = function(user){
@@ -20,13 +21,10 @@ angular.module('core').run(['Menus', '$rootScope', 'Categories', 'Authentication
 			});	
 		};
 		
+		//Watch for a change of the global user
 		$rootScope.$watch('user', function () {
 			updateUser($rootScope.user);
 		}, true);
-		
-		// $rootScope.$watch('user.workingOn', function () {
-		// 	updateUser($rootScope.user);
-		// });
 		
 		updateCatalogs();
 		

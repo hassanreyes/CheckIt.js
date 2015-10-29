@@ -119,7 +119,10 @@ var UserSchema = new Schema( {
     //On screen Working copy 
     workingOn: {
         //Time of last auto-saved modification 
-        updated: Date,
+        updated: { 
+            type: Date,
+            default: Date.now()
+        },
         //On screen working copy of a checklist
         checklist: {
             id: {

@@ -40,7 +40,9 @@ module.exports = {
 				'public/lib/ngFileReader/vendor/swfobject.js',
 				'public/lib/ngFileReader/vendor/jquery.FileReader.js',
 				'public/lib/ngFileReader/src/ngFileReader.js',
-				'public/lib/angular-social/angular-social.js'
+				'public/lib/angular-social/angular-social.js',
+				'public/socket.io/socket.io.js',
+				'public/lib/angular-socket-io/socket.min.js'
 			]
 		},
 		css: [

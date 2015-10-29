@@ -2,9 +2,9 @@
     <h3 class="modal-title">{{ checklist.name }} <sapn class="glyphicon glyphicon-exclamation-sign fa-5x"></sapn></h3>
 </div>
 <div class="modal-body">
-    <p>Save changes of your working checklist: <em>{{ checklist.name }}</em>?</p>
+    <p>You will lose all not saved changes in the working-on checklist: <em>{{ checklist.name }}</em>. Continue anyway?</p>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">Dismiss</button>
+    <button class="btn btn-primary" type="button" ng-click="ok()">Continue</button>
     <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
 </div>
