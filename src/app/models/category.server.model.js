@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-	materializedPlugin = require('mongoose-materialized'),
+	//materializedPlugin = require('mongoose-materialized'),
+	pathTreePlugin = require('mongoose-path-tree'),
 	Schema = mongoose.Schema;
 
 /**
@@ -31,27 +32,12 @@ var CategorySchema = new Schema({
 	}
 });
 
-CategorySchema.plugin(materializedPlugin);
+//CategorySchema.plugin(materializedPlugin);
+CategorySchema.plugin(pathTreePlugin);
 
 var Category = mongoose.model('Category', CategorySchema);
 
-/**
- * Insert initial values
- * */
-// Category.findOne({name:'Construction'}).exec(function(error, cat){
-// 	cat.getAncestors(function(err, tree){
-// 		for(var item in tree){
-// 			console.log(item._doc.name);
-// 		}	
-// 	});
-// });
 
-Category.GetRoots({name:'Java'}).then(function(error, root){
-	root.getChildren().then(function (err, children) {
-        console.log( Category.toTree(children) );
-        // or only shown name
-        console.log( Category.toTree(children, { name: 1 }) );
-    });	
-});
+
 
 

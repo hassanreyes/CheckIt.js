@@ -170,7 +170,7 @@ var UserSchema = new Schema( {
                         trim: true
                     }
                 }]
-            }],
+            }]
         }
     }
 });
@@ -265,66 +265,5 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 mongoose.model('User', UserSchema);
 mongoose.model('History', HistorySchema);
 
-/**
- * Setup code
- */
-var User = mongoose.model('User');
-var History = mongoose.model('History');
 
-/**
- * Create Admin user if not
- * */
-var user = new User( { 
-     firstName : 'Admin', 
-     lastName : '.', 
-     displayName : 'Administrator', 
-     username: 'Admin', 
-     password : 'admin123', 
-     roles : ['admin'], 
-     email : 'hassan.reyes@gmail.com', 
-     status : 'active',
-     provider : 'local'
- });
-
-User.findOne({ username : user.username}).exec(function(err, adminUser){
-    if(err){ }
-    else {
-        if(!adminUser){
-        user.save(function(err, adminUser){
-            if(err){  console.error(err); }
-            else{
-                //Update all current checklist creator user, to use this
-                var conditions = {  }
-                     , update = { $set: { user: adminUser._id }}
-                     , options = { multi: true };
-                    
-                Checklist.update(conditions, update, options, function(err, numAffected) {
-                    if(err){
-                        console.error('Updating existing checklists: ' + err);
-                    }
-                    console.log('Updating existing checklists: User Records updated: ' + numAffected);  
-                });
-            }
-         });
-        }
-    }
- });
- 
-/* Clear all User's favorites */
-//  var conditions = {  }
-//   , update = { $set: { favorites: [] }}
-//   , options = { multi: true };
-
-// User.update(conditions, update, options, function(err, numAffected) {
-//     if(err){
-//         console.error('Clear Favorites: ' + err);
-//     }
-//     console.log('Clear Favorites: User Records updated: ' + numAffected);  
-// });
-
-
-// History.remove({}).exec(function(err){
-//     if(err) { console.error('Clearing Histroy: ' + err); }
-//     else { console.log('Clearing Histroy'); }
-// });
  

@@ -27,6 +27,9 @@ var app = require('./config/express')(db);
 // Bootstrap passport config
 require('./config/passport')();
 
+// Loads to Db all default records
+require('./config/defaults');
+
 // Start the app by listening on <port>
 var server = app.listen(config.port);
 

@@ -22,21 +22,32 @@ exports.create = function(req, res) {
 			});
 		} else {
 			// Append as a child of given parent
-			if(req.body.parent){
-				Category.findById(req.body.parent).exec(function(err, cat) {
-					if (err) {
-						return res.status(400).send({
-							message: errorHandler.getErrorMessage(err)
-						});
-					} else {
-						cat.appendChild(category);
-						res.jsonp(category);
-					}
-				});
-			}
-			else{
-				res.jsonp(category);
-			}
+			category.parent = req.body.parent;
+			category.save(function(error, data){
+				if (error) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(error)
+					});
+				} else {
+					res.jsonp(data);
+				}
+			});
+
+			//if(req.body.parent){
+			//	Category.findById(req.body.parent).exec(function(err, cat) {
+			//		if (err) {
+			//			return res.status(400).send({
+			//				message: errorHandler.getErrorMessage(err)
+			//			});
+			//		} else {
+			//			cat.appendChild(category);
+			//			res.jsonp(category);
+			//		}
+			//	});
+			//}
+			//else{
+			//	res.jsonp(category);
+			//}
 		}
 	});
 	
@@ -125,8 +136,8 @@ exports.hasAuthorization = function(req, res, next) {
 /**
  * Get Categories tree
  */
-exports.tree = function(req, res) { 
-	Category.GetFullArrayTree(function(err, tree) {
+exports.tree = function(req, res) {
+	Category.getChildrenTree({ name: 'Software Engineering', recursive: true }, function(err, tree) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
