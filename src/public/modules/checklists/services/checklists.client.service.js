@@ -23,7 +23,8 @@ angular.module('checklists').factory('Search', ['$resource',
 		return $resource('search/:query', { query : '@query' }, {
 			search: {
 				method: 'GET',
-				params: { searchText: '@query' }
+				params: { searchText: '@query'},
+				isArray: true
 			}
 		});
 	}

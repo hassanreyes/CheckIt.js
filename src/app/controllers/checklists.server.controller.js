@@ -127,28 +127,14 @@ exports.hasAuthorization = function(req, res, next) {
  * Perform a full text search over all checklists
  */
 exports.search = function(req, res, next, query){
-	Checklist.textSearch(query, function (err, checklists) {
+	Checklist.find( { $text: {$search: query} }, { score: { $meta: "textScore" } })
+		.populate('category user').sort({score: {$meta: 'textScore'}}).exec(function (err, checklists) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			var iter = function (result, callback){
-				Category.populate(result.obj, { path: 'category', select: 'name' }, function(err, catCklst){
-					if (err) {
-						return res.status(400).send({
-							message: errorHandler.getErrorMessage(err)
-						});
-					} else {
-						User.populate(catCklst, { path: 'user', select: 'displayName'}, callback); 
-					}
-				});
-			};
-			
-			async.each(checklists.results, iter, function(err){
-				//console.log(JSON.stringify(checklists));
-				res.json(checklists);
-			});
+			res.json(checklists);
 		}
 	});
 };

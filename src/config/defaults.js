@@ -12,9 +12,9 @@ var mongoose = require('mongoose'),
 /**
  * Setup code
  */
-var User = mongoose.model('User');
-var History = mongoose.model('History');
-
+var User = mongoose.model('User'),
+    History = mongoose.model('History'),
+    Checklist = mongoose.model('Checklist');
 /**
  * Create Admin user if not
  * */

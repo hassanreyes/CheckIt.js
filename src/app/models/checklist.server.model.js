@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    textSearch = require('mongoose-text-search'),
+    //textSearch = require('mongoose-text-search'),
 	Schema = mongoose.Schema;
 
 /**
@@ -130,9 +130,10 @@ var ChecklistSchema = new Schema( {
 });
 
 // give our schema text search capabilities
-ChecklistSchema.plugin(textSearch);
+//ChecklistSchema.plugin(textSearch);
 
-ChecklistSchema.index({ 'name': 'text', 'description': 'text', 'sections.name': 'text', 'sections.description' : 'text', 'sections.items.content': 'text'});
+ChecklistSchema.index({ 'name': 'text', 'description': 'text', 'sections.name': 'text', 'sections.description' : 'text', 'sections.items.content': 'text'},
+    { weight : { 'name': 10, 'description': 5, 'sections.name': 5, 'sections.description' : 2, 'sections.items.content': 1 } });
 
 mongoose.model('Checklist', ChecklistSchema);
 mongoose.model('Section', SectionSchema);

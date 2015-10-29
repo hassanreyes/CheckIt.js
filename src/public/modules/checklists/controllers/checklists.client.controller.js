@@ -90,15 +90,15 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		 * Search in the checklsit catalog
 		 * */
 		$scope.search = function(){
-			
+
 			var search = $location.search();
 			$scope.searchQuery = search.query;
 			
 			Search.search({query : search.query}, function(searchResult){
 				var checklists = [];
-				for(var i = 0; i < searchResult.results.length; i++)
+				for(var i = 0; i < searchResult.length; i++)
 				{
-					checklists[i] = searchResult.results[i].obj;
+					checklists[i] = searchResult[i].obj;
 				}
 				$scope.checklists = checklists;
 				$scope.filteredChecklists = $scope.checklists.slice(0, $scope.numPerPage);
