@@ -13,7 +13,8 @@
   },
   "scripts": {
     "start": "node node_modules/grunt-cli/bin/grunt",
-    "test": "node node_modules/grunt-cli/bin/grunt test"
+    "test": "node node_modules/grunt-cli/bin/grunt test",
+    "postinstall": "bower install --config.interactive=false"
   },
   "main": "server.js",
   "dependencies": {
