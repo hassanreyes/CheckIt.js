@@ -1,0 +1,67 @@
+<section ng-controller="WorkingChecklistsController" ng-init="init()">
+	<h4>Outline - <small>Working Checklist</small></h4>
+    
+    <div class="alert alert-warning" role="alert" ng-show="errors.length > 0">
+    	<ul ng-repeat="err in errors">
+    		<li>{{err}}</li>
+    	</ul>
+    </div>
+    
+    <div class="navbar navbar-inverse">
+	    <ul class="nav navbar-nav">
+	    	<li><a data-ng-click="new()" title="New"><span class="glyphicon glyphicon-file"></span></a></li>
+	    	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
+			<li><a data-ng-click="save()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
+	    	<li><a data-ng-click="edit()" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
+	    </ul>
+    </div>
+    
+    <ui-select ng-model="category" on-select="categorySelected($item, $model);" theme="bootstrap" style="width: 200px;" required>
+		<ui-select-match placeholder="Select a category">{{$select.selected.name}}</ui-select-match>
+		<ui-select-choices repeat="cat.id as cat in categories | filter: $select.search">
+		  	<span ng-bind-html="cat.name | highlight: $select.search"></span>
+		</ui-select-choices>
+	</ui-select>
+	
+	<div id="printable-working">
+		</br>
+		<div>
+			<h3 class="chklst_title" style="color: white; text-align: left; color: darkgray;" data-ng-bind="checklist.name" ></h3>
+		</div>
+		
+		<div ng-show="checklist.sections.length > 0">
+			<div ui-tree data-max-depth="2">
+			  <ol ui-tree-nodes ng-model="checklist.sections">
+			    <li ng-repeat="section in checklist.sections" id="work_chklst_section_{{$index}}" ui-tree-node class="section_item" >
+			    	</br>
+			    	<!--span ui-tree-handle class="glyphicon glyphicon-th" style="color: #DBDBDB;"></span-->
+					<small><a data-ng-click="removeSection(checklist, $index)"><span class="glyphicon glyphicon-remove chklst_remove highlight-invert"></span></a></small>
+			        <small><h4 ui-tree-handle style="display: inline; background: #080808; color: silver;">{{section.name}}</h4></small>
+					<small>{{section.description}}</small>
+					<ol ui-tree-nodes ng-model="section.items">
+						<li ng-repeat="item in section.items" id="work_chklst_item_{{$index}}" ui-tree-node ng-model="section.items" style="background: #080808; border-bottom: 1px dotted gray; border-top: 0px; border-right: 0px; border-left: 0px;">
+							<!--span ui-tree-handle class="glyphicon glyphicon-th" style="color: #DBDBDB;"></span-->
+							<small><a data-ng-click="removeItem(checklist, section, $index)"><span class="pull-right glyphicon glyphicon-remove chklst_remove highlight-invert"></span></a></small>
+						    <small><p ui-tree-handle style="display: inline; text-align: justify; font-size: x-small; background: #080808; color: silver;">{{item.content}}</p></small>
+						</li>
+					</ol>
+			    </li>
+			  </ol>
+			</div>
+		</div>
+		
+		<div ng-show="checklist.sections.length == 0">
+			<div class="well well-lg">
+				<p>
+					<strong>Add sections and items to your new checklists is easy:</strong>
+					<br/>
+					Click on the left button at any section or item, and then select <em>Add to Working checklist</em>.
+					Or add an item to a specific section.
+					<br/>
+					You can also manually edit your checklist using the list button at the top menu.
+				</p>
+			</div>
+		</div>
+		
+	</div>
+</section>

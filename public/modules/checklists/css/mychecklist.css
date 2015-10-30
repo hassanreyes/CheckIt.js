@@ -1,0 +1,172 @@
+/*My checklist style*/
+.chklst_title, .editableTextField {
+    border: 0;
+    /*background-color: whitesmoke;*/
+    font-family: Verdana;
+    font-style: oblique;
+    font-size: 1.5em;
+    color: #3B3F3F;
+    text-align: center;
+    width: 90%;
+    max-width: 1000px;
+}
+
+.chklst_desc, .editableTextField {
+    border: 0;
+    /*background-color: whitesmoke;*/
+    font-family: "Times New Roman";
+    font-style: italic;
+    font-size: 0.8em;
+    color: #3B3F3F;
+    text-align: center;
+    width: 90%;
+    max-width: 1000px;
+}
+
+.chklst_section_name, .editableTextField {
+    border: 0;
+    /*background-color: whitesmoke;*/
+    font-family: serif;
+    font-style: oblique;
+    font-size: 1.25em;
+    color: #626565;
+    text-align: justify;
+    width: 90%;
+    max-width: 1000px;
+}
+
+.chklst_section_desc, .editableTextField {
+    border: 0;
+    /*background-color: whitesmoke;*/
+    font-family: "Times New Roman";
+    font-style: italic;
+    font-size: 0.8em;
+    color: #626565;
+    text-align: justify;
+    width: 90%;
+    max-width: 1000px;
+}
+
+.chklst_item, .editableTextField {
+    border: 0;
+    /*background-color: whitesmoke;*/
+    font-family: "Lucida Console";
+    font-style: normal;
+    font-size: 1em;
+    color: #727474;
+    text-align: justify;
+    width: 90%;
+    overflow-y: auto;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    min-height: 20px;
+    max-width: 1000px;
+}
+
+.editableTextField {
+    border: 1px solid #000000;
+}
+
+.chklst_items ol {
+    /*width: 10em;*/
+    counter-reset: item;
+    list-style-position: outside;
+}
+
+.chklst_lstitem li {
+    position: relative;
+    left: 2em;
+    display: block;
+    list-style-position: outside;
+}
+
+.chklst_lstitem li:before {
+    content: counters(item, ".") ". ";
+    counter-increment: item;
+    position: absolute;
+    left: -2.5em;
+    color: Gray;
+}
+
+.chklst_remove {
+    color: darkgray; 
+    vertical-align: top;
+}
+
+.chklst_drop_zone { border: dotted 3px lightgray; }
+.chklst_file_over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+.another-file-over-class { border: dotted 3px green; }
+
+.truncate {
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.highlight{
+    color: #E0E0E0;
+}
+.highlight:hover{
+    color: #2C2C2C;
+}
+
+.highlight-invert{
+    color: #2C2C2C;
+}
+.highlight-invert:hover{
+    color: #E0E0E0;
+}
+
+.category_name{
+    border: 0;
+    background-color: WhiteSmoke;
+    font-family: Verdana;
+    font-style: oblique;
+    color: #3B3F3F;
+}
+
+.cklst_item{
+    color: DimGray;
+}
+
+.cklsts_separator{
+    margin: 2px;
+}
+
+.category_item{
+    color: #448700;
+}
+
+.onscreen_ctrl{
+    visibility:visible;
+}
+
+
+@media print {
+    /*body * {
+        visibility:hidden;
+    }*/
+    
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+    .onscreen_ctrl{
+        visibility:hidden;
+        display: none;
+    }
+    li.section_item {
+        list-style-type:none;
+    }
+    li {
+        vertical-align: top;
+    }
+    .cklst_name {
+        color: black;
+    }
+}

@@ -1,0 +1,64 @@
+<section data-ng-controller="WorkingChecklistsController" ng-init="init()">
+    <!--div class="page-header">
+        <h1>New Checklist</h1>
+    </div-->
+    
+    <div class="alert alert-warning" ng-show="errors.length > 0">
+    	<ul ng-repeat="err in errors">
+    		<li>{{err}}</li>
+    	</ul>
+    </div>
+    
+    <!--data-ng-keydown="onKeyDown($event);"-->
+    <div class="col-md-12 container">
+    	<div class="row">
+    		<h2>Working On Checklist</h2>
+			<ul class="nav navbar-nav inline">
+		    	<li><a data-ng-click="new()" title="New"><span class="glyphicon glyphicon-file"></span></a></li>
+		    	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
+				<li><a data-ng-click="save()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
+		    </ul>
+    	</div>
+    	<div class="row">
+	    	<ui-select ng-model="category" on-select="categorySelected($item, $model);" theme="bootstrap" style="width: 200px;" required>
+				<ui-select-match placeholder="Select a category">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="cat.id as cat in categories | filter: $select.search">
+				  	<span ng-bind-html="cat.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</ui-select>	
+    	</div>
+    </div>
+	
+    <input type="text" id="name" data-ng-model="checklist.name" data-ng-keydown="onTitleKeyDown($event, checklist)" custom-autofocus="focusElement == 'Title'"
+			class="chklst_title" placeholder="Enter the new Checklist name" required/>
+			
+	<!--Sections-->
+	<ul data-ng-repeat="section in checklist.sections" id="create_chklst_section_{{$index}}" style="list-style-type: none;">
+		<li class="list-group-item">
+			<small><a data-ng-click="removeSection(checklist, $index)"><span class="glyphicon glyphicon-remove chklst_remove highlight"></span></a></small>
+			<input type="text" class="chklst_section_name" placeholder="Section Name" 
+				data-ng-model="section.name" data-ng-keypress="onSectionKeyPress($event, checklist, section)"  data-ng-keydown="onSectionKeyDown($event, checklist, section, $index)"
+				custom-autofocus="$index == secFocusIndex && focusElement == 'SectionName'"/>
+				<input type="text" class="chklst_section_desc" placeholder="Section Description" 
+				data-ng-model="section.description" data-ng-keypress="onSectionDescKeyPress($event, checklist, section)" data-ng-keydown="onSectionDescKeyDown($event, section, $index)"
+				custom-autofocus="$index == secFocusIndex && focusElement == 'SectionDesc'"
+				role="group"/>
+			
+			<ul class="list-group" style="list-style-type: none;">
+				<li data-ng-repeat="item in section.items" id="create_chklst_item_{{$index}}">
+					<small><a data-ng-click="removeItem(checklist, section, $index)"><span class="glyphicon glyphicon-remove chklst_remove highlight"></span></a></small>
+					<!--span class="badge pull-left">{{$index+1}}</span>&nbsp;--><textarea class="chklst_item" placeholder="Item {{$index+1}}" 
+					data-ng-model="item.content" data-ng-keydown="onItemKeyDown($event, checklist, section, item, $index)" 
+					custom-autofocus="$index == itemFocusIndex && focusElement == 'Item'" msd-elastic >
+				</textarea>
+				</li>
+			</ul>
+		</li>
+	</ul>
+	
+	<!-- Error Message -->
+	<div data-ng-show="error" class="text-danger">
+		<strong data-ng-bind="error"></strong>
+	</div>
+	
+</section>

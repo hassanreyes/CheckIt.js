@@ -1,0 +1,59 @@
+<section data-ng-controller="BrowseController" data-ng-init="find()">
+    <div>
+        <h1>Browse Checklists</h1>
+    </div>
+    
+    <script type="text/ng-template" id="nodes_renderer.html">
+        <div ui-tree-handle class="category-tree-handle">
+            <a class="btn btn-success btn-xs" ng-if="node.children && node.children.length > 0" data-nodrag ng-click="toggle(this)"><span class="glyphicon" ng-class="{'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed}"></span></a>
+            <a ng-click="selectCategory(node.id);"><span class="category_item">{{node.name}}</span></a>
+          </div>
+          <ol ui-tree-nodes="" ng-model="node.children" ng-class="{hidden: collapsed}">
+            <li ng-repeat="node in node.children" ui-tree-node ng-include="'nodes_renderer.html'">
+            </li>
+          </ol>
+    </script>
+    
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-6 col-md-4">
+            <h3>Categories</h3>
+            <div ui-tree id="CategoriesTree" data-drag-enabled="false">
+        	  <ol ui-tree-nodes ng-model="categories">
+        	    <li ng-repeat="node in categories" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+        	  </ol>
+        	</div>
+        </div>
+        
+        <div class="col-xs-* col-md-* col-xs-offset-6 col-md-offset-4">
+            <div class="list-group">
+                <div data-ng-repeat="checklist in filteredChecklists | filter:selectedCategory | orderBy: 'category.name' | groupBy: 'category.name'" >
+                    <div ng-show="checklist.group_by_CHANGED">
+                        <a data-ng-href="#!/browse/{{checklist.category._id}}" >
+                            <h3 ng-show="checklist.group_by_CHANGED" class="category_name">{{checklist.category.name}}</h3>
+                        </a>
+                    </div>
+                    <a data-ng-href="#!/checklists/{{checklist._id}}" >
+            			<h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
+            			<small class="list-group-item-text cklst_item">
+            				Posted on
+            				<span data-ng-bind="checklist.created | date:'medium'"></span>
+            				by
+            				<span data-ng-bind="checklist.user.displayName"></span>
+            				<hr class="cklsts_separator">
+            			</small>
+                    </a>
+                </div>
+            </div>
+            
+            <pagination ng-model="currentPage" total-items="checklists.length" max-size="maxSize" boundary-links="true">
+            </pagination>
+        </div>
+      </div>
+    </div>
+    
+    <div class="alert alert-warning text-center" data-ng-show="authentication.user && checklists.length == 0">
+    	No Checklists yet, why don't you <a href="/#!/checklists/create">create one</a>?
+    </div>
+    
+</section>
