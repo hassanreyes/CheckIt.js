@@ -6,7 +6,7 @@
     "jquery" : "~2.1.4",
     "es5-shim" : "*",
     "bootstrap": "~3",
-    "angular": "~1.2",
+    "angular": "1.2.29",
     "angular-elastic": "~2.4.2",
     "angular-resource": "~1.2",
     "angular-mocks": "~1.2",
