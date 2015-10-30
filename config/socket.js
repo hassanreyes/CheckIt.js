@@ -6,6 +6,11 @@ module.exports = function(server){
     
     // // Attach socket
     var io = require("socket.io")(server);
+
+    io.configure(function () {
+        io.set("transports", ["xhr-polling"]);
+        io.set("polling duration", 20);
+    });
     
     //The '/workingOn' namespace handle with all collaborative working over a checklist
     var workingOn = io.of('/workingOn');

@@ -7,10 +7,10 @@ angular.module('checkit').factory('socket', function ($rootScope, $location, soc
 
     var socket = io.connect(url + '/workingOn', {
       transports: [
-        'websocket', 
+        'xhr-polling',
         'flashsocket', 
         'htmlfile', 
-        'xhr-polling', 
+        'websocket',
         'jsonp-polling', 
         'polling'
       ]
