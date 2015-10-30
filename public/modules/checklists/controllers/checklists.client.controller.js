@@ -106,7 +106,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		};
 		
 		/**
-		 * 
+		 * TODO: Move to a service!!!! Working on needs to call it too
 		 * */
 		$scope.printDiv = function(divName) {
 	  		var printContents = document.getElementById(divName).innerHTML;

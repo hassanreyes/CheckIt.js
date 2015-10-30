@@ -98,7 +98,11 @@ angular.module('checklists').controller('WorkingChecklistsController', ['$scope'
 		 * Alert the user to save changes or dismiss
 		 **/
 		$scope.new = function(){
-			WorkingOnService.create();
+			WorkingOnService.create(function(){
+				if($window.location.href != '/#!/workingOn'){
+					$window.location.href = '/#!/workingOn';
+				}
+			});
 		};
 		
 		/**

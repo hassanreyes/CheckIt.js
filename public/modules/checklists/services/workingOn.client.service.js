@@ -114,7 +114,7 @@ angular.module('checklists').service('WorkingOnService', ['Checklists', '$rootSc
 	    /**
 	     * Create a totaly new checklist state object
 	     * */
-	    var create = function(){
+	    var create = function(next){
 	        _checklist = {
 	        	name 		: 'My New Checklists',
 	        	description : '',
@@ -122,7 +122,7 @@ angular.module('checklists').service('WorkingOnService', ['Checklists', '$rootSc
 	        	user		: Authentication.user
 	        };
 	        
-	        sync('workingOn:push', _checklist);
+	        sync('workingOn:push', _checklist, next);
 	    };
 	    
 	    /**
