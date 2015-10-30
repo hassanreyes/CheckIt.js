@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/checkit-dev',
+	db: process.env.MONGOLAB_URI || 'mongodb://localhost/checkit-dev',
 	app: {
 		title: 'checkit - Development Environment'
 	},
