@@ -6,7 +6,7 @@ module.exports = {
 		description: 'Web application tool for software inspections, giving the user the facilities to search, create and share checklists for a product or process. ',
 		keywords: 'MongoDb, Express, AngularJS, Node.js, Inspections, checklist'
 	},
-	port: process.env.PORT || 3000,
+	port: process.env.OPENSHIFT_NODEJS_PORT || 3000,
 	templateEngine: 'swig',
 	sessionSecret: 'MEAN',
 	sessionCollection: 'sessions',
