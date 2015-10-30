@@ -23,5 +23,8 @@
     "angular-socket-io": "0.7.0",
     "ngFileReader": "~0.0.6",
     "ng-file-upload": "~3.0.2"
+  },
+  "resolutions": {
+    "angular": "1.2.29"
   }
 }
