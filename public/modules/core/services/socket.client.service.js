@@ -9,14 +9,15 @@ angular.module('checkit').factory('socket', function ($rootScope, $location, soc
 
     var socket = io.connect(url + '/workingOn', {
       transports: [
-        'xhr-polling',
-        'flashsocket', 
-        'htmlfile', 
-        'websocket',
-        'jsonp-polling', 
-        'polling'
+        'xhr-polling'
       ]
     });
+
+    //'flashsocket',
+    //    'htmlfile',
+    //    'websocket',
+    //    'jsonp-polling',
+    //    'polling'
   
     var opts = { ioSocket : socket };
   
