@@ -5,10 +5,10 @@ var socket = require('../app/socket.io/socket.server.js');
 module.exports = function(server){
     
     // // Attach socket
-    var io = require("socket.io")(server);
+    var io = require("socket.io").listen(server);
 
-    io.set("transports", ["xhr-polling"]);
-    io.set("polling duration", 20);
+    //io.set("transports", ["xhr-polling", 'websocket']);
+    //io.set("polling duration", 20);
     
     //The '/workingOn' namespace handle with all collaborative working over a checklist
     var workingOn = io.of('/workingOn');
@@ -17,6 +17,8 @@ module.exports = function(server){
     
     //Hook Socket.io into Express
     workingOn.on('connection', socket.onWorkingOnConnect);
+
+    console.log('Socket attached and listening');
     
     return io;
 };
