@@ -22,7 +22,7 @@ var db = mongoose.connect(config.db, function(err) {
 });
 
 // Init the express application
-var app = require('./config/express')(db);
+var server = require('./config/express')(db);
 
 // Bootstrap passport config
 require('./config/passport')();
@@ -30,16 +30,14 @@ require('./config/passport')();
 // Loads to Db all default records
 require('./config/defaults');
 
+// Attach socket
+require('./config/socket')(server);
+
 // Start the app by listening on <port>
-var server = app.listen(config.port);
+server.listen(config.port);
 
 // Expose app
-exports = module.exports = app;
+exports = module.exports = server;
 
 // Logging initialization
 console.log('MEAN.JS application started on port ' + config.port);
-
-// Attach socket 
-require('./config/socket')(server);
-
-console.log('Socket attached and listening');
