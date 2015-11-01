@@ -145,13 +145,13 @@ mongoose.model('Checklist', ChecklistSchema);
 mongoose.model('Section', SectionSchema);
 mongoose.model('Item', ItemSchema);
 
-var Checklist = mongoose.model('Checklist');
-Checklist.update({}, { $set : { status : null} }, {multi:true}, function (err, rawResponse) {
-    if(err){ console.log("**** Error checklists.status = null : " + err); }
-    else { console.log("*** " + rawResponse + " checklist status set to null ****"); }
-});
-
-Checklist.update({}, { $set : { status : 'draft'} }, {multi:true}, function(err, rawResponse){
-    if(err){ console.log("**** Error checklists.status = draft : " + err); }
-    else { console.log("*** " + rawResponse + " checklist status set to DRAFT ****"); }
-});
+//var Checklist = mongoose.model('Checklist');
+//Checklist.update({}, { $set : { status : null} }, {multi:true}, function (err, rawResponse) {
+//    if(err){ console.log("**** Error checklists.status = null : " + err); }
+//    else { console.log("*** " + rawResponse + " checklist status set to null ****"); }
+//});
+//
+//Checklist.update({}, { $set : { status : 'draft'} }, {multi:true}, function(err, rawResponse){
+//    if(err){ console.log("**** Error checklists.status = draft : " + err); }
+//    else { console.log("*** " + rawResponse + " checklist status set to DRAFT ****"); }
+//});
