@@ -148,7 +148,7 @@ exports.share = function(req, res){
 	response += '<head>';
 	response += '<meta property="og:title" content="" />';
 	response += '<meta property="og:description" content="<?php echo $data->description; ?>" />';
-	response += '<meta property="og:image" content="http://checkittool.herokuapp.com/modules/core/img/brand/logo.png />';
+	response += '<meta property="og:image" content="https://checkittool.herokuapp.com/modules/core/img/brand/logo.png"/>';
 	response += '</head>';
 	
 	res.send(response);     
@@ -163,7 +163,7 @@ exports.shareChecklist = function(req, res, next, id) {
 			response += '<head>';
 			response += '<meta property="og:title" content="' + checklist.name + '" />';
 			response += '<meta property="og:description" content="' + checklist.description + '" />';
-			response += '<meta property="og:image" content="http://checkittool.herokuapp.com/modules/core/img/brand/logo.png />';
+			response += '<meta property="og:image" content="https://checkittool.herokuapp.com/modules/core/img/brand/logo.png"/>';
 			response += '</head>';
 	
 			res.send(response);
