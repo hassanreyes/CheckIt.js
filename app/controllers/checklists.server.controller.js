@@ -89,6 +89,8 @@ exports.list = function(req, res) {
 	var query = undefined;
 	if(req.query.isBrowsing === undefined || req.query.isBrowsing != 'true'){
 		query = { 'user' : req.user.id };
+	}else{
+		query = { 'status' : 'published' }; //browse only published
 	}
 	Checklist.find(query).sort('-created').populate('user', 'displayName').populate('category').exec(function(err, checklists) {
 		if (err) {
@@ -105,7 +107,7 @@ exports.list = function(req, res) {
  * Checklist middleware
  */
 exports.checklistByID = function(req, res, next, id) { 
-	Checklist.findById(id).populate('user', 'displayName').populate('category').exec(function(err, checklist) {
+	Checklist.findById(id).populate('user', 'displayName').populate('category').populate('collaborators.user','displayName').exec(function(err, checklist) {
 		if (err) return next(err);
 		if (! checklist) return next(new Error('Failed to load Checklist ' + id));
 		req.checklist = checklist ;
@@ -127,7 +129,7 @@ exports.hasAuthorization = function(req, res, next) {
  * Perform a full text search over all checklists
  */
 exports.search = function(req, res, next, query){
-	Checklist.find( { $text: {$search: query} }, { score: { $meta: "textScore" } })
+	Checklist.find( { $text: {$search: query}, 'status' : 'published' }, { score: { $meta: "textScore" } })
 		.populate('category user').sort({score: {$meta: 'textScore'}}).exec(function (err, checklists) {
 		if (err) {
 			return res.status(400).send({
@@ -146,7 +148,7 @@ exports.share = function(req, res){
 	response += '<head>';
 	response += '<meta property="og:title" content="" />';
 	response += '<meta property="og:description" content="<?php echo $data->description; ?>" />';
-	response += '<meta property="og:image" content="https://checkit-js-hassanreyes-1.c9.io/modules/core/img/brand/logo.png />';
+	response += '<meta property="og:image" content="http://checkittool.herokuapp.com/modules/core/img/brand/logo.png />';
 	response += '</head>';
 	
 	res.send(response);     
@@ -161,7 +163,7 @@ exports.shareChecklist = function(req, res, next, id) {
 			response += '<head>';
 			response += '<meta property="og:title" content="' + checklist.name + '" />';
 			response += '<meta property="og:description" content="' + checklist.description + '" />';
-			response += '<meta property="og:image" content="https://checkit-js-hassanreyes-1.c9.io/modules/core/img/brand/logo.png />';
+			response += '<meta property="og:image" content="http://checkittool.herokuapp.com/modules/core/img/brand/logo.png />';
 			response += '</head>';
 	
 			res.send(response);

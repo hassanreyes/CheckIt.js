@@ -82,7 +82,7 @@ exports.lastVisited = function(req, res){
 			var options = [{
 				path: 'checklist.user',
 				model: 'User',
-				select: '_id displayName'
+				select: '_id displayName status'
 			},{
 				path: 'checklist.category',
 				model: 'Category',
@@ -105,7 +105,7 @@ exports.lastVisited = function(req, res){
 
 exports.lastAdded = function(req, res){
 
-	Checklist.find().populate('user', 'displayName').populate('checklist').populate('category').limit(21).sort('-created').exec(function(err, checklists) {
+	Checklist.find({'status' : 'published'}).populate('user', 'displayName').populate('checklist').populate('category').limit(21).sort('-created').exec(function(err, checklists) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -116,6 +116,33 @@ exports.lastAdded = function(req, res){
 	});
 	
 };
+
+/**
+ * Retrun a list of top 5 checklist where the given user is collaborating
+ *  ordered by updated -1
+ * @param req
+ * @param res
+ */
+exports.collaboratingOn = function(req, res){
+	var user = req.user;
+	if(user){
+		Checklist.find({ collaborators: { $elemMatch : { user: user._id } } }).
+			populate('user', 'displayName').populate('checklist').populate('category').
+			limit(6).sort('-created').exec(function(err, checklists) {
+				if (err) {
+					return res.status(400).send({
+						message: errorHandler.getErrorMessage(err)
+					});
+				} else {
+					res.jsonp(checklists);
+				}
+			});
+	}else{
+		return res.status(401).send({
+			message: errorHandler.getErrorMessage("Not user found.")
+		});
+	}
+}
 
 exports.recommended = function(req, res){
 	

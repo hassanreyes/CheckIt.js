@@ -8,6 +8,7 @@
                 <a data-ng-href="#!/browse/{{checklist.category._id}}" ng-show="checklist.group_by_CHANGED">
                     <h3 ng-show="checklist.group_by_CHANGED">{{checklist.category.name}}</h2>
                 </a>
+                <small><span class="inline label label-default" ng-show="checklist.status == 'draft'">{{checklist.status}}</span></small>
                 <a data-ng-href="#!/checklists/{{checklist._id}}" class="list-group-item">
     			<small class="list-group-item-text">
     				Posted on

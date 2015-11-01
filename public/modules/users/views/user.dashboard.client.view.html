@@ -18,6 +18,7 @@
                             <div data-ng-repeat="checklist in favorites | limitTo:5 ">
                                 <a data-ng-href="#!/checklists/{{checklist._id}}" >
                         			<h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
+                                    <small><span class="inline label label-default" ng-show="checklist.status == 'draft'">{{checklist.status}}</span></small>
                         			<small class="list-group-item-text cklst_item">
                         				Posted on
                         				<span data-ng-bind="checklist.created | date:'medium'"></span>
@@ -33,6 +34,28 @@
                         </div>
                     </div>
                 </div>
+                <!-- Collaborating On checklists -->
+                <div class="row" ng-show="collaboratingOn && collaboratingOn.length > 0">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><strong>Collaborating On</strong></div>
+                        <div class="panel-body list-group" ng-show="collaboratingOn != undefined && collaboratingOn.length > 0">
+                            <div data-ng-repeat="checklist in collaboratingOn | limitTo:10">
+                                <a data-ng-href="#!/checklists/{{checklist._id}}" >
+                                    <h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
+                                    <small><span class="inline label label-default" ng-show="checklist.status == 'draft'">{{checklist.status}}</span></small>
+                                    <small class="list-group-item-text cklst_item">
+                                        Posted on
+                                        <span data-ng-bind="checklist.created | date:'medium'"></span>
+                                        in
+                                        <span data-ng-bind="checklist.category.name"></span>
+                                        <hr class="cklsts_separator">
+                                    </small>
+                                </a>
+                            </div>
+                            <a ng-show="collaboratingOn.length > 5" data-ng-href="#!/collaboratingOn" >More...</a>
+                        </div>
+                    </div>
+                </div>
                 <!-- My checklist (top 10, visited DESC) -->
                 <div class="row">
                     <div class="panel panel-default">
@@ -45,6 +68,7 @@
                             <div data-ng-repeat="checklist in myChecklists | limitTo:10">
                                 <a data-ng-href="#!/checklists/{{checklist._id}}" >
                         			<h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
+                                    <small><span class="inline label label-default" ng-show="checklist.status == 'draft'">{{checklist.status}}</span></small>
                         			<small class="list-group-item-text cklst_item">
                         				Posted on
                         				<span data-ng-bind="checklist.created | date:'medium'"></span>
@@ -67,7 +91,7 @@
                             <p class="text-center"><a href="#!/browse"> Browse our catalog! </a></p>
                         </div>
                         <div class="panel-body list-group" ng-show="visitedChecklists != undefined && visitedChecklists.length > 0">
-                            <div data-ng-repeat="history in visitedChecklists">
+                            <div data-ng-repeat="history in visitedChecklists | filter: { checklist : { status : 'published' } }">
                                 <a data-ng-href="#!/checklists/{{history.checklist._id}}" >
                         			<h4 class="list-group-item-heading" data-ng-bind="history.checklist.name"></h4>
                         			<small class="list-group-item-text cklst_item">
@@ -106,26 +130,6 @@
                     <br/>
                     <a data-ng-href="#!/browse" >More...</a>
                 </div>
-                <!-- Recomended (top 10,  recently visited & favorites, updated DESC) -->
-                <!--div class="row">
-                    <h3>Recommended Checklists</h3>
-                    <div class="list-group">
-                        <div data-ng-repeat="checklist in recommChecklists">
-                            <a data-ng-href="#!/checklists/{{checklist._id}}" >
-                    			<h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
-                    			<small class="list-group-item-text cklst_item">
-                    				Posted on
-                    				<span data-ng-bind="checklist.created | date:'medium'"></span>
-                    				by
-                    				<span data-ng-bind="checklist.user.displayName"></span>
-                    				<hr class="cklsts_separator">
-                    			</small>
-                            </a>
-                        </div>
-                    </div>
-                    <br/>
-                    <a data-ng-href="#!/checklists/{{checklist._id}}" >More...</a>
-                </div-->
             </div>
         </div>
     </div>

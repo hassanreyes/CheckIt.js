@@ -8,6 +8,15 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
+ * Set All cehcklist to DRAFT status
+ * @type {Model<T>}
+ */
+
+if(process.env.NODE_ENV && process.env.NODE_ENV === 'production'){
+    mongoose
+}
+
+/**
  * Item Schema
  */
 var ItemSchema = new Schema( {
@@ -105,10 +114,8 @@ var ChecklistSchema = new Schema( {
         ref: 'Category'
     },
     status: {
-        type: [{
-            type: String,
-            enum: [ 'draft', 'published', 'vetoed' ]
-        }],
+        type: String,
+        enum: [ 'draft', 'published', 'vetoed' ],
         default: 'draft'
     },
 	sections: [SectionSchema],
@@ -119,10 +126,8 @@ var ChecklistSchema = new Schema( {
 	          ref: 'User'
 	        },
 	        access: {
-                type: [{
-                    type: String,
-                    enum: [ 'view', 'comment', 'edit' ]
-                }],
+                type: String,
+                enum: [ 'view', 'comment', 'edit' ],
                 default: 'view'
             }
 	    }
@@ -132,9 +137,21 @@ var ChecklistSchema = new Schema( {
 // give our schema text search capabilities
 //ChecklistSchema.plugin(textSearch);
 
+
 ChecklistSchema.index({ 'name': 'text', 'description': 'text', 'sections.name': 'text', 'sections.description' : 'text', 'sections.items.content': 'text'},
     { weight : { 'name': 10, 'description': 5, 'sections.name': 5, 'sections.description' : 2, 'sections.items.content': 1 } });
 
 mongoose.model('Checklist', ChecklistSchema);
 mongoose.model('Section', SectionSchema);
 mongoose.model('Item', ItemSchema);
+
+var Checklist = mongoose.model('Checklist');
+Checklist.update({}, { $set : { status : null} }, {multi:true}, function (err, rawResponse) {
+    if(err){ console.log("**** Error checklists.status = null : " + err); }
+    else { console.log("*** " + rawResponse + " checklist status set to null ****"); }
+});
+
+Checklist.update({}, { $set : { status : 'draft'} }, {multi:true}, function(err, rawResponse){
+    if(err){ console.log("**** Error checklists.status = draft : " + err); }
+    else { console.log("*** " + rawResponse + " checklist status set to DRAFT ****"); }
+});

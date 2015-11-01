@@ -6,6 +6,10 @@ angular.module('users').factory('Users', ['$resource',
 		return $resource('users', {}, {
 			update: {
 				method: 'PUT'
+			},
+			get: {
+				method: 'GET',
+				isArray: true
 			}
 		});
 	}

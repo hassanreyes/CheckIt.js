@@ -43,10 +43,31 @@ angular.module('checklists').service('CheckItModals', ['$modal',
 				}
 			});
 		};
+
+		this.collaboratorsModal = function (chklst, next) {
+			var modal = $modal.open({
+				animation: true,
+				templateUrl: '/modules/checklists/views/modals/collaborators-modal-checklist.client.view.html',
+				controller: 'ChecklistsCollabModalController',
+				size: 'md',
+				resolve: {
+					item : function(){
+						return chklst;
+					}
+				}
+			});
+
+			modal.result.then(function(checklist){
+				if(checklist != undefined){
+					next(checklist);
+				}
+			});
+		}
 		
 		return {
 		    dismissChecklistModal : this.dismissChecklistModal,
-		    removeChecklistModal : this.removeChecklistModal
+		    removeChecklistModal : this.removeChecklistModal,
+			collaboratorsModal : this.collaboratorsModal
 		};
 	    
 	}

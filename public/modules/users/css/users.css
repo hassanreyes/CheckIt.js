@@ -12,3 +12,12 @@
 	right: 10px;
 	position: absolute;
 }
+.badge-xs {
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	font-size: 10px;
+	background: #d8e7fc;
+	padding: 2px;
+	color: #333;
+}

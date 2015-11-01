@@ -71,11 +71,14 @@ User.findOne({ username : user.username}).exec(function(err, adminUser){
 //     else { console.log('Clearing Histroy'); }
 // });
 
+
+
 var Category = mongoose.model('Category');
 User.findOne({ username : user.username }).exec(function(err, adminUser) {
     if(adminUser){
         Category.findOne({name:'Software Engineering'}).exec(function(error, result){
             if(!result){
+                console.log("Generating default Categories...")
                 var cat0 = new Category({name:'Software Engineering', user : adminUser}),
                     cat1 = new Category({name:'Software Implementation', user : adminUser}),
                     cat1_1 = new Category({name:'Architectual Design', user : adminUser}),
@@ -153,6 +156,7 @@ User.findOne({ username : user.username }).exec(function(err, adminUser) {
                         cat3_8.save();
                     });
                 });
+                console.log("Default Categories generated.")
             }
         });
     }

@@ -18,6 +18,7 @@ module.exports = {
 				'public/lib/angular-ui-select/dist/select.css',
 				'public/lib/angular-ui-tree/dist/angular-ui-tree.min.css',
 				'public/lib/angular-social/angular-social.css',
+				'public/lib/allmighty-autocomplete/style/autocomplete.css'
 			],
 			js: [
 				'public/lib/jquery/dist/jquery.mini.js',
@@ -42,7 +43,10 @@ module.exports = {
 				'public/lib/ngFileReader/src/ngFileReader.js',
 				'public/lib/angular-social/angular-social.js',
 				'public/socket.io/socket.io.js',
-				'public/lib/angular-socket-io/socket.min.js'
+				'public/lib/angular-socket-io/socket.min.js',
+				'public/lib/allmighty-autocomplete/script/autocomplete.js',
+				'public/lib/allmighty-autocomplete/script/app.js',
+				'public/lib/ng-lodash/build/ng-lodash.min.js'
 			]
 		},
 		css: [

@@ -7,7 +7,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		$scope.user = Authentication.user;
 		$scope.WorkingOnService = WorkingOnService;
 		$scope.workingOnChecklist = WorkingOnService.checklist;
-
+		$scope.errors = [];
 		$scope.categories = [];
 		
 		$scope.checklist = {};
@@ -90,21 +90,13 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		 * Search in the checklsit catalog
 		 * */
 		$scope.search = function(){
-
 			var search = $location.search();
-			$scope.searchQuery = search.query;
-			
-			Search.search({query : search.query}, function(searchResult){
-				var checklists = [];
-				for(var i = 0; i < searchResult.length; i++)
-				{
-					checklists[i] = searchResult[i].obj;
-				}
-				$scope.checklists = checklists;
+			$scope.checklists = Search.search({query : search.query});
+			$scope.checklists.$promise.then(function(){
 				$scope.filteredChecklists = $scope.checklists.slice(0, $scope.numPerPage);
 			});
 		};
-		
+
 		/**
 		 * TODO: Move to a service!!!! Working on needs to call it too
 		 * */
@@ -115,6 +107,21 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 	  		popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="/modules/checklists/css/mychecklist.css" /></head><body onload="window.print()">' + printContents + '</html>');
 	  		popupWin.document.close();
 		};
+
+		$scope.publish = function (checklist) {
+			checklist.status = 'published';
+			Checklists.update({ checklistId: checklist._id}, checklist, function(checklist){
+				$scope.checklist = checklist;
+			});
+		};
+
+        $scope.showCollaborators = function () {
+            CheckItModals.collaboratorsModal($scope.checklist, function (checklist) {
+                Checklists.update({ checklistId: checklist._id}, checklist, function(checklist){
+                    $scope.checklist = checklist;
+                });
+            })
+        }
 	  	
 	  	/**
 	  	 * Favorite handling code

@@ -9,14 +9,14 @@ angular.module('users').controller('DashboardController', ['$scope', '$http', '$
 		$scope.visitedChecklists = [];
 		$scope.addedChecklists = [];
 		$scope.recommChecklists = [];
+		$scope.collaboratingOn = [];
 		
 		$scope.init = function(){
 		    $scope.getFavorite();
 		    $scope.getMyChecklist();
 		    $scope.getLastVisited();
 		    $scope.getLastAdded();
-		    
-		    //$scope.recommChecklists = Checklists.query();
+			$scope.getCollaboratingOn();
 		};
 		
 		$scope.getFavorite = function(){
@@ -45,5 +45,11 @@ angular.module('users').controller('DashboardController', ['$scope', '$http', '$
 				$scope.addedChecklists = result;
 			});
 		};
+
+		$scope.getCollaboratingOn = function () {
+			$http.get("dashboard/collaboratingOn", $scope.user).success(function(result){
+				$scope.collaboratingOn = result;
+			});
+		}
 	}
 ]);

@@ -43,16 +43,16 @@ angular.module('browse').controller('BrowseController', ['$scope', '$stateParams
 		    $scope.filteredChecklists = $scope.checklists.slice(begin, end);
 	  	});
 	
-		$timeout(function() {
-		  // https://github.com/JimLiu/angular-ui-tree/issues/292
-		  var treeElement = angular.element(document.querySelector('#CategoriesTree'));
-		  if (treeElement) {
-		    var treeScope = (typeof treeElement.scope === 'function') ? treeElement.scope() : undefined;
-		    if (treeScope && typeof treeScope.$$childHead.collapseAll === 'function') {
-		      treeScope.$$childHead.collapseAll();
-		    }
-		    //treeElement.show();
-		  }
-		}, 200);
+		//$timeout(function() {
+		//  // https://github.com/JimLiu/angular-ui-tree/issues/292
+		//  var treeElement = angular.element(document.querySelector('#CategoriesTree'));
+		//  if (treeElement) {
+		//    var treeScope = (typeof treeElement.scope === 'function') ? treeElement.scope() : undefined;
+		//    if (treeScope && typeof treeScope.$$childHead.collapseAll === 'function') {
+		//      treeScope.$$childHead.collapseAll();
+		//    }
+		//    //treeElement.show();
+		//  }
+		//}, 200);
 	}
 ]);

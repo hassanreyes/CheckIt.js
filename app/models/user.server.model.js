@@ -106,11 +106,9 @@ var UserSchema = new Schema( {
         default: "en"
     },
     status: {
-        type: [{
-            type: String,
-            enum: ['inactive', 'active' ]
-        }],
-        default: ['inactive']
+        type: String,
+        enum: ['inactive', 'active' ],
+        default: 'inactive'
     },
     favorites: [{ 
         type: Schema.ObjectId, 

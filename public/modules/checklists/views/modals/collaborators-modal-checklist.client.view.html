@@ -1,0 +1,42 @@
+
+<div class="modal-header" ng-init="init()">
+    <h3 class="modal-title">Share: <em>{{ checklist.name }}</em></h3>
+</div>
+<div class="modal-body">
+
+    <p>Find People</p>
+
+    <div class="input-group">
+        <autocomplete ng-model="collab" data="userNames"></autocomplete>
+        <span class="input-group-btn">
+            <button class="btn btn-lg btn-default" type="button" ng-click="add()">
+                <span class="glyphicon glyphicon-plus-sign"></span> Add
+            </button>
+        </span>
+    </div>
+    <br/>
+    <strong><p>Collaborators</p></strong>
+        <div class="panel-body" ng-show="collaborators.length <= 0">
+            <span>This checklist is not shared with anyone.</span>
+        </div>
+        <ul class="list-group" ng-repeat="collab in collaborators">
+            <li class="list-group-item">
+
+                    <span class="navbar-fixed-left">{{collab.displayName}} </span>
+                    <span class="navbar-btn">
+                        <div class="btn-group btn-group-xs" role="group">
+                            <label class="btn btn-default" ng-model="collab.access" btn-radio="'view'">View</label>
+                            <label class="btn btn-default" ng-model="collab.access" btn-radio="'edit'">Edit</label>
+                        </div>
+                        <div class="btn-xs btn-danger navbar-right">
+                            <span class="glyphicon glyphicon-minus-sign" ng-click="remove(collab)"> Remove </span>
+                        </div>
+                    </span>
+
+            </li>
+        </ul>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+</div>
