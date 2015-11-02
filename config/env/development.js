@@ -3,7 +3,7 @@
 module.exports = {
 	db: process.env.MONGOLAB_URI || 'mongodb://localhost/checkit-dev',
 	app: {
-		title: 'checkit - Development Environment'
+		title: 'CheckIt - The Software Inspection Tool'
 	},
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',

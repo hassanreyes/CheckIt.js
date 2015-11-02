@@ -15,6 +15,10 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 		state('learn', {
 			url: '/learn',
 			templateUrl: 'modules/core/views/learn.client.view.html'
+		}).
+		state('help', {
+			url: '/help',
+				templateUrl: 'modules/core/views/help.client.view.html'
 		});
 	}
 ]);

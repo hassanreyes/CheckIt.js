@@ -52,8 +52,9 @@
 </head>
 
 <body class="ng-cloak">
+
 	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
-	
+
 	<div id="wrapper" class="content">
 
         <!-- Sidebar -->
@@ -65,17 +66,22 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-8">
                     	
                     	{% block content %}{% endblock %}
-                    	
+
                     </div>
                 </div>
             </div>
         </div>
+		<div class="nav navbar-fixed-buttom">
+			<div class="container">
+				<p class="text-center">Hassan Reyes, <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License 2015.</a> <a href="mailto:checkittool@gmail.com?Subject=Hello%20CheckIt" target="_top">Contact</a></p>
+			</div>
+		</div>
         <!-- /#page-content-wrapper -->
     </div>
-	
+
 	<!--Embedding The User Object-->
 	<script type="text/javascript">
 		var user = {{ user | json | safe }};
