@@ -13,9 +13,9 @@ angular.module('checklists').controller('UploadChecklistsController', ['$scope',
                 //Is already have a Working on checklist,ask for dismiss or save
                 var checklist = WorkingOnService.getChecklist();
                 if(checklist != undefined  && checklist.sections != null && checklist.sections.length > 0){
-                		CheckItModals.dismissChecklistModal(checklist, function(){
-	                        $scope.upload($scope.files);
-                    });
+					CheckItModals.dismissChecklistModal(checklist, function(){
+						$scope.upload($scope.files);
+					});
                 }else{
                     $scope.upload($scope.files);
                 }

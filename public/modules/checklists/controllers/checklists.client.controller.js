@@ -44,7 +44,14 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 				}
 			});
 		};
-		
+
+		$scope.remove = function(){
+			CheckItModals.removeChecklistModal($scope.checklist, function(){
+				$scope.checklist.$remove(function() {
+					$location.path('checklists');
+				});
+			});
+		};
 		
 		$scope.findFavorites = function() {
 			$http.get("dashboard/topFavorite", $scope.user).success(function(result){
