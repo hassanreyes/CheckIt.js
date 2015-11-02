@@ -56,7 +56,6 @@ exports.onWorkingOnConnect = function(socket) {
 			socket.broadcast.to(id).emit('workingOn:updated', { error : error, workingOn : workingOn });
 			callback(error, workingOn);
 		});
-		//TODO: broadcast updated
 	});
 
 	/**

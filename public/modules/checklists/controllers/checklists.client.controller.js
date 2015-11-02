@@ -1,8 +1,8 @@
 'use strict';
 
 // Checklists controller
-angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Authentication', 'Checklists', 'Categories', 'History', '$upload', 'Parser', 'Search', '$http', 'CheckItModals', 'WorkingOnService', '$window',
-	function($scope, $rootScope, $stateParams, $location, $state, Authentication, Checklists, Categories, History, $upload, Parser, Search, $http, CheckItModals, WorkingOnService, $window) {
+angular.module('checklists').controller('ChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Authentication', 'Checklists', 'Categories', 'History', '$upload', 'Parser', 'Search', '$http', 'CheckItModals', 'WorkingOnService', '$window', 'lodash',
+	function($scope, $rootScope, $stateParams, $location, $state, Authentication, Checklists, Categories, History, $upload, Parser, Search, $http, CheckItModals, WorkingOnService, $window, lodash) {
 		$scope.authentication = Authentication;
 		$scope.user = Authentication.user;
 		$scope.WorkingOnService = WorkingOnService;
@@ -16,11 +16,8 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		$scope.currentPage = 1,
 		$scope.numPerPage = 10,
 		$scope.maxSize = 10;
-		
-		// $rootScope.$watch('user', function () {
-		// 	$scope.workingOn = $rootScope.user.workingOn.checklist;
-		// }, true);
-		
+
+
 		$scope.$watch('WorkingOnService.getChecklist()', function(newVal, oldVal, scope) {
 		    $scope.workingOnChecklist = WorkingOnService.getChecklist();
 		}, true);
@@ -33,15 +30,16 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 			    $scope.filteredChecklists = $scope.checklists.slice(begin, end);	
 			}
 	  	});
-		
+
 		
 		$scope.categorySelected = function($item, $model){
 			$scope.workingOn.category = $scope.category.id;
 		};
 		
 		$scope.edit = function(checklist){
-			WorkingOnService.edit(checklist._id, function(){
-				if(WorkingOnService.getChecklist().id == checklist._id)	{
+			WorkingOnService.edit(checklist._id, function(err, result){
+                if(err) { $scope.errors.push(error); }
+				if(WorkingOnService.getChecklist().id == result.id)	{
 					$window.location.href = "/#!/workingOn";
 				}
 			});
@@ -68,9 +66,7 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 
 		// Find existing Checklist
 		$scope.findOne = function() {
-			
-			$scope.workingOn = $rootScope.user.workingOn.checklist;
-			
+
 			Checklists.get({ 
 				checklistId: $stateParams.checklistId
 				}, function(checklist){
@@ -174,6 +170,26 @@ angular.module('checklists').controller('ChecklistsController', ['$scope', '$roo
 		  	
 	  	};
 
+        /**
+         * Permissions logic
+         */
+        $scope.permissions = {
+            /**
+             * A user must be logged in,
+             * And the session user must be the author or in the collaborators list.
+             * @param checklist
+             * @returns {*|null|boolean}
+             */
+            isEditable : function (checklist) {
+                if($scope.authentication.user && lodash.has(checklist, 'user._id') &&
+                    (checklist.user._id == $scope.authentication.user._id ||
+                        lodash.find(checklist.collaborators, {user : { _id : $scope.authentication.user._id }, access : 'edit' } ))){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
 		
 		/***************************************************************************************************************************/
 		/******* View Options *************/

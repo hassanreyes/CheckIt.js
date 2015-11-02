@@ -2,7 +2,7 @@
 
 	<div class="container-fluid col-lg-10" >
 		<ul class="list-inline ">
-			<li class="navbar-left" data-ng-show="((authentication.user) && (authentication.user._id == checklist.user._id))">
+			<li class="navbar-left" data-ng-show="permissions.isEditable(checklist)">
 				<a data-ng-click="edit(checklist)" title="Edit">
 					<span class="glyphicon glyphicon-edit"></span>
 				</a>
@@ -17,9 +17,6 @@
 	        		<span class="glyphicon glyphicon-print"></span>
         		</a>
     		</li>
-	        <li class="navbar-left" data-ng-show="((authentication.user) && (authentication.user._id == checklist.user._id))">
-	        	<a data-ng-click="" title="Share"><span class="glyphicon glyphicon-share"></span></a>
-        	</li>
     		<li class="navbar-left" data-ng-show="(authentication.user) && favorite.isFavorite(checklist)">
 	        	<a data-ng-click="favorite.removeFavorites(checklist)" title="Remove from Favorites"><span class="glyphicon glyphicon-heart" style="color: red;"></span></a>
         	</li>
@@ -37,10 +34,14 @@
 				</button>
 			</li>
 
+			<!--script>
+				var link = 'https://checkittool.herokuapp.com/checklists/{{checklist._id}}';
+			</script-->
+
 			<li class="navbar-right" ng-show="checklist.status === 'published'">
 				<ul ng-social-buttons
-					class="pull-right vcenter" style="padding-top: 10px;"
-					data-url="'https://checkittool.herokuapp.com/checklists/{{checklist._id}}'"
+					class="pull-right vcenter"
+					data-url="'https://checkittool.herokuapp.com/checklists'"
 					data-title="checklist.name"
 					data-description="checklist.description"
 					data-image="'https://checkittool.herokuapp.com/modules/core/img/brand/logo.png'"
@@ -82,8 +83,6 @@
 									<span class="glyphicon glyphicon-tasks"></span>
 								</button>
 								<ul class="dropdown-menu" role="menu">
-									<li><a href="#"><span class="glyphicon glyphicon-trash"></span> Remove</a></li>
-									<li class="divider"></li>
 									<li><a data-ng-click="addSectionTo(checklist, section)"><span class="glyphicon glyphicon-plus"></span> Add to Working Checklist</a></li>
 								</ul>
 							</div>
@@ -99,9 +98,9 @@
 										</button>
 										<ul class="dropdown-menu" role="menu">
 											<li class="dropdown-submenu">
-												<a href="#"><span class="glyphicon glyphicon-plus"></span> Add to</a>
+												<a><span class="glyphicon glyphicon-plus"></span> Add to</a>
 							                    <ul class="dropdown-menu">
-							                        <li data-ng-repeat="sec in workingOnChecklist.sections"><a href="#" data-ng-click="addItemTo(checklist, item, $index)">{{sec.name}}</a></li>
+							                        <li data-ng-repeat="sec in workingOnChecklist.sections"><a data-ng-click="addItemTo(checklist, item, $index)">{{sec.name}}</a></li>
 							                    </ul>
 						                  	</li>
 										</ul>

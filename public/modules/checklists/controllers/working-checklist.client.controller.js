@@ -1,8 +1,8 @@
 'use strict';
 
 // Checklists controller
-angular.module('checklists').controller('WorkingChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Authentication', 'Checklists', 'Catalogs', 'Users', 'Parser', '$http', '$modal', 'WorkingOnService', '$window', 'CheckItModals', 
-	function($scope, $rootScope, $stateParams, $location, $state, Authentication, Checklists, Catalogs, Users, Parser, $http, $modal, WorkingOnService, $window, CheckItModals) {
+angular.module('checklists').controller('WorkingChecklistsController', ['$scope', '$rootScope', '$stateParams', '$location', '$state', 'Authentication', 'Checklists', 'Catalogs', 'Users', 'Parser', '$http', '$modal', 'WorkingOnService', '$window', 'CheckItModals', 'lodash',
+	function($scope, $rootScope, $stateParams, $location, $state, Authentication, Checklists, Catalogs, Users, Parser, $http, $modal, WorkingOnService, $window, CheckItModals, lodash) {
 		$scope.WorkingOnService = WorkingOnService;
 		$scope.authentication = Authentication;
 		$scope.user = Authentication.user;
@@ -38,11 +38,7 @@ angular.module('checklists').controller('WorkingChecklistsController', ['$scope'
 	            	if($scope.checklist.category.id){
 	            		$scope.category = $scope.checklist.category;
 	            	}else{
-	            		$scope.categories.forEach(function(item){
-	            			if(item._id == $scope.checklist.category){
-	            				$scope.category = item;
-	            			}
-	            		});
+						$scope.category = lodash.findLast($scope.categories, { _id : $scope.checklist.category});
 	            	}
 	            }
 			//});
@@ -63,11 +59,7 @@ angular.module('checklists').controller('WorkingChecklistsController', ['$scope'
 	            	if($scope.checklist.category.id){
 	            		$scope.category = $scope.checklist.category;
 	            	}else{
-	            		$scope.categories.forEach(function(item){
-	            			if(item._id == $scope.checklist.category){
-	            				$scope.category = item;
-	            			}
-	            		});
+						$scope.category = lodash.findLast($scope.categories, { _id : $scope.checklist.category});
 	            	}
 	            }
 			};
@@ -161,9 +153,7 @@ angular.module('checklists').controller('WorkingChecklistsController', ['$scope'
 				WorkingOnService.update($scope.checklist);
 			}
 		};
-		
-		
-		
+
 		/******* Checklist Edition ********/
 		$scope.focusElement = "Title";
 		$scope.lastKeyPress = 0;

@@ -17,7 +17,7 @@ var _roomChannels = {};
 var getRoomId = function(user) {
     var id = null;
     if (user) {
-        if (_.has(user, 'workingOn.checklist.id')) {
+        if (user.workingOn && user.workingOn.checklist && user.workingOn.checklist.id) {
             id = 'checklist_' + user.workingOn.checklist.id.toString();
         }
         else {
@@ -94,8 +94,9 @@ var update = function(property, id, checklist, callback) {
             break;
     }
 
-    User.update(conditions, update, options, function(err, n) {
-        callback(err, workingOn);
+    User.update(conditions, update, options, function(err, n, model) {
+        if(n == 0){ callback("Checklist could not be loaded on working on"); }
+        else{ callback(err, workingOn); }
     });
 };
 
@@ -210,7 +211,15 @@ exports.edit = function(channel, id, callback) {
                 update('user', channel.user.id, checklist, callback);
             }
             else {
-                callback("there is no checklist for the given user");
+                //Check if current user is a collaborator
+                Checklist.findOne({ _id: id, 'collaborators.user': channel.user.id, 'collaborators.access': 'edit' }).
+                    exec(function(error, checklist){
+                        if (checklist) {
+                            update('user', channel.user.id, checklist, callback);
+                        }else{
+                            callback("The user has no edition rights for this list.");
+                        }
+                });
             }
         }
     });
@@ -257,17 +266,30 @@ exports.save = function(channel, checklist, callback) {
         options = {
             multi: false
         };
-    
+
+        //Update as author
         Checklist.update(conditions, update, options, function(err, n) {
             if(err) { callback(err); }
             else{
                 if(n == 0){
-                    callback("checklist not saved, target checklist not found for the given user");
-                }else{
-                    Checklist.findOne({ _id : checklist.id}).exec(function(error, result) {
-                        callback(err, result);
+                    //Update as collaborator
+                    conditions = {
+                        _id: checklist.id,
+                        'collaborators.user': channel.user.id,
+                        'collaborators.access': 'edit'
+                    };
+
+                    Checklist.update(conditions, update, options, function(err, n){
+                        if(n == 0){
+                            callback("checklist not saved, target checklist not found for the given user");
+                            return;
+                        }
                     });
                 }
+
+                Checklist.findOne({ _id : checklist.id}).exec(function(error, result) {
+                    callback(err, result);
+                });
             }
         });
     }

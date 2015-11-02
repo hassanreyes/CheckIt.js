@@ -29,11 +29,12 @@ angular.module('users').config(['$httpProvider',
 	}
 ]);
 
-angular.module('users').run(function($rootScope, $state, Authentication){
+angular.module('users').run(function($rootScope, $state, Authentication, WorkingOnService){
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
 		// If user is loged-in, then show user´s dashboard
 		if(toState.name === "home" && Authentication.user)
 		{
+			WorkingOnService.authenticate();
 			event.preventDefault();
 			$state.transitionTo('dashboard');
 		}
