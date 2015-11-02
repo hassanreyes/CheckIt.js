@@ -39,7 +39,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading"><strong>Collaborating On</strong></div>
                         <div class="panel-body list-group" ng-show="collaboratingOn != undefined && collaboratingOn.length > 0">
-                            <div data-ng-repeat="checklist in collaboratingOn | limitTo:10">
+                            <div data-ng-repeat="checklist in collaboratingOn">
                                 <a data-ng-href="#!/checklists/{{checklist._id}}" >
                                     <h4 class="list-group-item-heading" data-ng-bind="checklist.name"></h4>
                                     <small><span class="inline label label-default" ng-show="checklist.status == 'draft'">{{checklist.status}}</span></small>
@@ -52,7 +52,6 @@
                                     </small>
                                 </a>
                             </div>
-                            <a ng-show="collaboratingOn.length > 5" data-ng-href="#!/collaboratingOn" >More...</a>
                         </div>
                     </div>
                 </div>

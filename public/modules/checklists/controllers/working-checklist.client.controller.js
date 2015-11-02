@@ -119,7 +119,6 @@ angular.module('checklists').controller('WorkingChecklistsController', ['$scope'
 		 * call the text edition page
 		 * */
 		$scope.edit = function(){
-			
 			//$state.transitionTo('newEditChecklist');//$state.go('newEditChecklist');
 			$window.location.href = "/#!/workingOn";
 			

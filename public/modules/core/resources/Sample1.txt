@@ -1,0 +1,69 @@
+﻿{"language":"es","author":"","reference":""}
+Checklist de Código Fuente del Software
+El objetivo de este checklist es guiarte en la conducción de una revisión efectiva del Código de Software.
+Por favor revisa los siguientes puntos.
+
+Completo
+	
+	Verificar que todo el código fuente cubre todo el diseño.
+
+Inicialización
+Checar variables y parámetros e inicialización:
+	
+	En la inicialización del programa.
+		
+	Al inicio de cada ciclo.
+		
+	En la entrada de cada clase/función/método
+		
+Llamadas
+	
+	Checar el formato de los parámetros de las llamadas.
+	
+Nombres
+
+	Checar la escritura del nombre.
+	
+	Su uso. 
+	
+	Es consistente.
+	
+	Esta declarada con el objetivo.
+
+Formatos de escritura
+Checar el formato de escritura:
+	
+	El escaloneado de las líneas es adecuada.
+	
+	El espacio es adecuado.
+	
+Pares de (), {}, “”
+
+	Asegurarse que cada apertura de paréntesis, corchetes, etc. tiene su cierre.
+	
+Operadores Lógicos
+
+	Verificar que están bien escritos: ==, !=, etc.
+	
+	Checar cada función lógica para ().
+	
+Checar línea-por-línea
+Checar cada línea de código para:
+	
+	Sintaxis de instrucciones.
+	
+	Puntuación indicada.
+	
+Estándar
+
+	Asegurarse que el código que conforma el programa cumple con el estándar de código.
+	
+Apertura y Cierre de archivos
+Verificar que los archivos son:
+	
+	Declarados
+	
+	Abiertos
+	
+	Cerrados
+	

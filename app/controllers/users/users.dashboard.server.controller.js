@@ -127,8 +127,7 @@ exports.collaboratingOn = function(req, res){
 	var user = req.user;
 	if(user){
 		Checklist.find({ collaborators: { $elemMatch : { user: user._id } } }).
-			populate('user', 'displayName').populate('checklist').populate('category').
-			limit(6).sort('-created').exec(function(err, checklists) {
+			populate('user', 'displayName').populate('checklist').populate('category').sort('-created').exec(function(err, checklists) {
 				if (err) {
 					return res.status(400).send({
 						message: errorHandler.getErrorMessage(err)

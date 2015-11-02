@@ -8,6 +8,50 @@
 		<br/>
 	</div>
     <!--div class="button" ng-file-select ng-file-change="upload($files)">Upload on file change</div-->
+	<p>
+		Upload your checklists is easy; remember they must be written in plain text (.txt) and match the following
+		<a href="" ng-click="isCollapsed = !isCollapsed">rules</a>. Yuo can also check this <a href="/modules/core/resources/Sample1.txt" target="_blank">sample file</a>.
+	</p>
+	<div collapse="isCollapsed">
+		<div class="well well-lg">
+			<ul>
+				<li>
+					The first line is a metadata and is enclosure in curly brackets {}. It follows the standard json format,
+					the possible fields are:
+					<ul>
+						<li>
+							<em>language:</em> The written language of the checklist (see the <a href="http://www.w3.org/International/O-charset-lang.html" target="_blank">languages list</a>)
+						</li>
+						<li>
+							<em>author:</em> The name of the original author if known.
+						</li>
+						<li>
+							<em>reference:</em> The website link or any other reference of the origin of the checklist, if exit.
+						</li>
+					</ul>
+					<comment>Note: enclosure all values in double quotes.</comment>
+				</li>
+				<li>
+					The second line is the Checklist title. The title must be just one line.
+				</li>
+				<li>
+					The following consecutive lines are the checklist description. The description ends until a blank line is left. This is optional.
+				</li>
+				<li>
+					After title and description, all lines after a black line and that had no tab at the font are consider section's title.
+				</li>
+				<li>
+					The next consecutive line after a section's title will be taken as the sections description.
+				</li>
+				<li>
+					All lines below a section and after a blank line and begins with a tabulation are consider section´s items.
+					All items can be as long as yuo want and they only ends until a blank line is left.
+				</li>
+				<comment>Note: Any checklist must have at least one section. Items can't be orphans.</comment>
+			</ul>
+		</div>
+	</div>
+
     Drop File:
     <div ng-file-drop ng-model="files" class="well chklst_drop_zone" accept="text/plain" 
         drag-over-class="chklst_file_over" ng-multiple="false" allow-dir="false">Drop checklist here (txt only)</div>

@@ -5,7 +5,8 @@ angular.module('checklists').controller('UploadChecklistsController', ['$scope',
 	function($scope, $rootScope, $state, Authentication, $upload, Parser, $http, $window, CheckItModals, WorkingOnService) {
 		$scope.authentication = Authentication;
 		$scope.user = Authentication.user;
-		
+		$scope.isCollapsed = true;
+
 		// Upload a checklist
         $scope.$watch('files', function () {
             if ($scope.files && $scope.files.length) {
