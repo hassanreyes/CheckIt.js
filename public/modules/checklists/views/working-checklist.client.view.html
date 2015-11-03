@@ -1,5 +1,5 @@
 <section ng-controller="WorkingChecklistsController" ng-init="init()">
-	<h4>Outline - <small>Working Checklist</small></h4>
+	<h4 style="color: #19469D">Outline - <small>Working Checklist</small></h4>
     
     <div class="alert alert-warning" role="alert" ng-show="errors.length > 0">
     	<ul ng-repeat="err in errors">
@@ -8,14 +8,36 @@
     </div>
     
     <div class="navbar navbar-inverse">
-	    <ul class="nav navbar-nav">
+	    <ul class="nav nav-pills">
 	    	<li><a data-ng-click="new()" title="New"><span class="glyphicon glyphicon-file"></span></a></li>
 	    	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
 			<li><a data-ng-click="save()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
 	    	<li><a data-ng-click="edit()" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
+			<!--li><a data-ng-click="isCollapsed = !isCollapsed" title="Chat"><span class="glyphicon glyphicon-earphone"></span></a></li-->
+			<li><a data-ng-click="isCollapsed = !isCollapsed" title="Messages">
+				Mgs <span class="badge badge-xs list-group-item">{{messages.length}}</span>
+			</a></li>
 	    </ul>
     </div>
-    
+
+	<!--Chat panel -->
+	<div class="panel panel-default" collapse="isCollapsed">
+		<div class="panel-heading">Collaboration Chat</div>
+		<div class="panel-body">
+			<div style="height: 150px; overflow: scroll;" scroll-glue>
+				<ul ng-repeat="msg in messages" style="list-style:none; padding-left:0;">
+					<li title="Posted on {{msg.created | date:'medium'}}"><strong>{{msg.username}}</strong>: {{msg.message}}</li>
+				</ul>
+			</div>
+			<div class="input-group">
+				<input type="text" class="form-control" ng-model="inputMsg" ng-keydown="onInputMsgKeyDown($event)">
+      		<span class="input-group-btn">
+        		<button class="btn btn-default" type="button" data-ng-click="sendMsg()">Send</button>
+      		</span>
+			</div>
+		</div>
+	</div>
+
     <ui-select ng-model="category" on-select="categorySelected($item, $model);" theme="bootstrap" style="width: 200px;" required>
 		<ui-select-match placeholder="Select a category">{{$select.selected.name}}</ui-select-match>
 		<ui-select-choices repeat="cat.id as cat in categories | filter: $select.search">

@@ -10,6 +10,10 @@ angular.module('checklists').controller('WorkingChecklistsController', ['$scope'
 		$scope.errors = [];
 		$scope.categories = [];
 		$scope.category = {};
+
+		$scope.isCollapsed = true;
+		$scope.inputMsg = '';
+		$scope.messages = [];
 		
 		$scope.checklist = WorkingOnService.getChecklist();
 		
@@ -28,6 +32,10 @@ angular.module('checklists').controller('WorkingChecklistsController', ['$scope'
 					$scope.errors.splice(idx, 1);
 				}
 			}
+		});
+
+		$scope.$watch('WorkingOnService.getMessages()', function(newVal, oldVal, scope){
+			$scope.messages = newVal;
 		});
 		
 		//Update the local copy of the working on checklist
@@ -83,6 +91,22 @@ angular.module('checklists').controller('WorkingChecklistsController', ['$scope'
 			}
 			
 			continueInit();
+		};
+
+		/**
+		 * Submit of an input message int he chat
+		 */
+		$scope.sendMsg = function(){
+			if(!lodash.isEmpty($scope.inputMsg)){
+				WorkingOnService.postMessage($scope.inputMsg);
+				$scope.inputMsg = '';
+			}
+		};
+
+		$scope.onInputMsgKeyDown = function(event, checklist) {
+			if (event.keyCode == 13) {
+				$scope.sendMsg();
+			}
 		};
 		
 		/**

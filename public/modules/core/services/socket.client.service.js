@@ -4,10 +4,14 @@ angular.module('checkit').factory('socket', function ($rootScope, $location, soc
   
     var url = $location.protocol() + '://' + $location.host() + ':' + $location.port();
 
-    var socket = io.connect(url + '/workingOn');
+    var woSocket = io.connect(url + '/workingOn');
+    var chSocket = io.connect(url + '/chat');
 
-    var opts = { ioSocket : socket };
-  
-    return socketFactory(opts);
-  
+    var hub = {
+        workingOn   : socketFactory({ ioSocket : woSocket }),
+        chat        : socketFactory({ ioSocket : chSocket }),
+    }
+
+    return hub;
+
 }).value('version', '0.1');

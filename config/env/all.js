@@ -46,7 +46,8 @@ module.exports = {
 				'public/lib/angular-socket-io/socket.min.js',
 				'public/lib/allmighty-autocomplete/script/autocomplete.js',
 				'public/lib/allmighty-autocomplete/script/app.js',
-				'public/lib/ng-lodash/build/ng-lodash.min.js'
+				'public/lib/ng-lodash/build/ng-lodash.min.js',
+				'public/lib/angular-scroll-glue/src/scrollglue.js'
 			]
 		},
 		css: [

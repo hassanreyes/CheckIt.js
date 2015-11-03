@@ -10,11 +10,17 @@ angular.module('checklists').service('WorkingOnService', ['Checklists', '$rootSc
 	    var _checklist = {};
 	    var _observers = [];
 	    var _error = null;
+		//Chat variables
+		var _messages = [];
 
-	    socket.on('workingOn:updated', function(data){
+	    socket.workingOn.on('workingOn:updated', function(data){
 	    	//someone else has updated the working on checklist that we are also working on
     		sync(null, data);
 	    });
+
+		socket.chat.on('send:message', function(message){
+			_messages.push(message);
+		});
 	    
 		var notifyObsrvers = function(){
 		    _observers.forEach(function(cb){
@@ -62,12 +68,12 @@ angular.module('checklists').service('WorkingOnService', ['Checklists', '$rootSc
 				if(event){
 					//Update server state
 					if(event == 'workingOn:save'){
-						socket.emit(event, arg, function(error, checklist){
+						socket.workingOn.emit(event, arg, function(error, checklist){
 							if(error){ _error = error; }
 							if(next){ next(_error, checklist);	}
 						});
 					}else{
-						socket.emit(event, arg, function(error, workingOn){
+						socket.workingOn.emit(event, arg, function(error, workingOn){
 				        	if(error){
 					    		_error = error;
 					    	}else{
@@ -101,8 +107,8 @@ angular.module('checklists').service('WorkingOnService', ['Checklists', '$rootSc
 			}
 		};
 
-		var authenticate = function(){
-			socket.emit('user:login', Authentication.user, function(error, workingOn) {
+		var authenticateWorkingOn = function(){
+			socket.workingOn.emit('user:login', Authentication.user, function(error, workingOn) {
 				if(error){
 					_ready = false;
 					_error = error;
@@ -115,6 +121,19 @@ angular.module('checklists').service('WorkingOnService', ['Checklists', '$rootSc
 					}else{
 						_error = "no workingOn retrieved";
 					}
+				}
+
+				notifyObsrvers();
+			});
+		};
+
+		var authenticateChat = function(){
+			//Chat login
+			socket.chat.emit('user:login', Authentication.user, function(error, messages) {
+				if(error){
+					_error = error;
+				}else{
+					_messages = messages;
 				}
 
 				notifyObsrvers();
@@ -159,7 +178,10 @@ angular.module('checklists').service('WorkingOnService', ['Checklists', '$rootSc
 	     * */
 	    var edit = function(id, next){
 	    	//Command the server to load the given checklist (id) into the working on state
-	    	sync('workingOn:edit', id, next);
+	    	sync('workingOn:edit', id, function(error, checklist){
+				authenticateChat();
+				next(error, checklist);
+			});
 	    };
 	    
 	    /**
@@ -181,13 +203,21 @@ angular.module('checklists').service('WorkingOnService', ['Checklists', '$rootSc
     		sync('workingOn:push', checklist, next);
 	    };
 
+		var postMessage = function(message){
+			socket.chat.emit('send:message', message, function(error, message){
+				if(error){ _error.push(error); }
+				else { _messages.push(message); }
+			});
+		};
+
 		/**
 		 * Instantiation commands
 		 */
 		if(Authentication.user && Authentication.user.workingOn)
 		{
 			_checklist = Authentication.user.workingOn.checklist;
-			authenticate();
+			authenticateWorkingOn();
+			authenticateChat();
 		}
 
 	    /**
@@ -199,16 +229,18 @@ angular.module('checklists').service('WorkingOnService', ['Checklists', '$rootSc
 	    	getChecklist 		: function () { return _checklist },
 	    	isReady				: function () { return _ready; },
 	    	getError			: function () { return _error; },
+			getMessages			: function () { return _messages; },
 	    	//Methods
 	    	registerObserver 	: registerObserver,
 	    	unRegisterObserver	: unRegisterObserver,
-			authenticate		: authenticate,
+			authenticate		: authenticateWorkingOn,
 	    	reset				: reset,
 	    	create				: createNew,
 	    	clear				: clear,
 	    	edit				: edit,
 	    	save				: save,
-	    	update				: update
+	    	update				: update,
+			postMessage			: postMessage,
 	    };
 	    
 	    return service;

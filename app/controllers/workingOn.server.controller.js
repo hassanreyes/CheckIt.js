@@ -123,6 +123,8 @@ var objectMetadataDel = function(copiedObjectWithId) {
  * Exports
  * ****************************************************************************/
 
+exports.getRoomId = getRoomId;
+
 /**
  * 
  * */

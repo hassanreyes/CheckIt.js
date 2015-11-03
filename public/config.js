@@ -6,7 +6,7 @@ var ApplicationConfiguration = (function() {
 	var applicationModuleName = 'checkit';
 	var applicationModuleVendorDependencies = ['ngResource', 'ngCookies',  'ngAnimate',  'ngTouch',  'ngSanitize',
 		'ui.router', 'ui.bootstrap', 'ui.utils', 'monospaced.elastic', 'angularFileUpload', 'ngFileReader', 'ui.select',
-		'ui.tree', 'ngSocial', 'btford.socket-io', 'autocomplete', 'ngLodash'];
+		'ui.tree', 'ngSocial', 'btford.socket-io', 'autocomplete', 'ngLodash','luegg.directives'];
 
 	// Add a new vertical module
 	var registerModule = function(moduleName, dependencies) {

@@ -14,6 +14,7 @@ module.exports = function(server){
     
     //Hook Socket.io into Express
     workingOn.on('connection', socket.onWorkingOnConnect);
+    chat.on('connection', socket.onChatConnect);
 
     console.log('Socket attached and listening');
     

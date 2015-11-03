@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "Web application tool for software inspections, giving the user the facilities to search, create and share checklists for a product or process. ",
   "dependencies": {
-    "jquery" : "~2.1.4",
-    "es5-shim" : "*",
+    "jquery": "~2.1.4",
+    "es5-shim": "*",
     "bootstrap": "~3",
     "angular": "=1.2.29",
     "angular-elastic": "~2.4.2",
@@ -24,7 +24,8 @@
     "ngFileReader": "~0.0.6",
     "ng-file-upload": "~3.0.2",
     "allmighty-autocomplete": "*",
-    "ng-lodash": "0.3.0"
+    "ng-lodash": "0.3.0",
+    "angular-scroll-glue": "~2.0.6"
   },
   "resolutions": {
     "angular": "1.2.29"
