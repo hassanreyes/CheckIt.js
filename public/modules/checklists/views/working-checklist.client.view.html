@@ -9,13 +9,13 @@
     
     <div class="navbar navbar-inverse">
 	    <ul class="nav nav-pills">
-	    	<li><a data-ng-click="new()" title="New"><span class="glyphicon glyphicon-file"></span></a></li>
-	    	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
-			<li><a data-ng-click="save()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
-	    	<li><a data-ng-click="edit()" title="Text Edit"><span class="glyphicon glyphicon-pencil"></span></a></li>
+	    	<li><a data-ng-click="new()" title="New"><span class="glyphicon glyphicon-file" style="color: #AEBDCC;"></span></a></li>
+	    	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print" style="color: #AEBDCC;"></span></a></li>
+			<li><a data-ng-click="save()" title="Save"><span class="glyphicon glyphicon-floppy-disk" style="color: #AEBDCC;"></span></a></li>
+	    	<li><a data-ng-click="edit()" title="Text Edit"><span class="glyphicon glyphicon-pencil" style="color: #AEBDCC;"></span></a></li>
 			<!--li><a data-ng-click="isCollapsed = !isCollapsed" title="Chat"><span class="glyphicon glyphicon-earphone"></span></a></li-->
 			<li><a data-ng-click="isCollapsed = !isCollapsed" title="Messages">
-				Mgs <span class="badge badge-xs list-group-item">{{messages.length}}</span>
+				<i class="fa fa-comment" style="color: #AEBDCC;"></i> <span class="badge badge-xs list-group-item">{{messages.length}}</span>
 			</a></li>
 	    </ul>
     </div>

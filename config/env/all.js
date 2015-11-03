@@ -17,8 +17,8 @@ module.exports = {
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
 				'public/lib/angular-ui-select/dist/select.css',
 				'public/lib/angular-ui-tree/dist/angular-ui-tree.min.css',
-				'public/lib/angular-social/angular-social.css',
-				'public/lib/allmighty-autocomplete/style/autocomplete.css'
+				'public/lib/allmighty-autocomplete/style/autocomplete.css',
+				'public/resources/css/font-awesome/css/font-awesome.min.css'
 			],
 			js: [
 				'public/lib/jquery/dist/jquery.mini.js',
@@ -41,13 +41,13 @@ module.exports = {
 				'public/lib/ngFileReader/vendor/swfobject.js',
 				'public/lib/ngFileReader/vendor/jquery.FileReader.js',
 				'public/lib/ngFileReader/src/ngFileReader.js',
-				'public/lib/angular-social/angular-social.js',
 				'public/socket.io/socket.io.js',
 				'public/lib/angular-socket-io/socket.min.js',
 				'public/lib/allmighty-autocomplete/script/autocomplete.js',
 				'public/lib/allmighty-autocomplete/script/app.js',
 				'public/lib/ng-lodash/build/ng-lodash.min.js',
-				'public/lib/angular-scroll-glue/src/scrollglue.js'
+				'public/lib/angular-scroll-glue/src/scrollglue.js',
+				'public/lib/angularjs-socialshare/dist/angular-socialshare.min.js'
 			]
 		},
 		css: [

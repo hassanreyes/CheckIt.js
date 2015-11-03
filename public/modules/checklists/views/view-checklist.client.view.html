@@ -1,5 +1,5 @@
 <section data-ng-controller="ChecklistsController" data-ng-init="findOne()">
-
+	<br/>
 	<div class="container-fluid col-lg-10" >
 		<ul class="list-inline ">
 			<li class="navbar-left" data-ng-show="permissions.isEditable(checklist)">
@@ -30,24 +30,45 @@
 			</li>
 			<li class="navbar-fixed-left" ng-show="((authentication.user) && (authentication.user._id == checklist.user._id))">
 				<button class="btn btn-primary btn-xs" type="button" ng-click="showCollaborators()" >
-					<span class="glyphicon glyphicon-user" > Collaborators <span class="badge badge-xs">{{checklist.collaborators.length}}</span>
+					<span class="glyphicon glyphicon-user"> Collaborators <span class="badge badge-xs">{{checklist.collaborators.length}}</span></span>
 				</button>
 			</li>
-
-			<!--script>
-				var link = 'https://checkittool.herokuapp.com/checklists/{{checklist._id}}';
-			</script-->
-
 			<li class="navbar-right" ng-show="checklist.status === 'published'">
-				<ul ng-social-buttons
-					class="pull-right vcenter"
-					data-url="'https://checkittool.herokuapp.com/checklists'"
-					data-title="checklist.name"
-					data-description="checklist.description"
-					data-image="'https://checkittool.herokuapp.com/modules/core/img/brand/logo.png'"
-					showcounts="true">
-					<li class="ng-social-facebook">Facebook</li>
-				</ul>
+				<a href=""
+				   socialshare
+				   socialshare-provider="facebook"
+				   socialshare-text="CheckIt - {{checklist.name}}"
+				   socialshare-caption="{{checklist.description}}"
+				   socialshare-url="https://checkittool.herokuapp.com/checklists/{{checklist._id}}"
+				   socialshare-media="https://checkittool.herokuapp.com/modules/core/img/brand/logo.png"
+				   socialshare-hashtags="CheckIt, checkittool, checklists">
+					<i class="fa fa-facebook-official"> Facebook</i>
+				</a>
+			</li>
+			<li class="navbar-right" ng-show="checklist.status === 'published'">
+				<a href=""
+				   socialshare
+				   socialshare-provider="google+"
+				   socialshare-text="CheckIt - {{checklist.name}}"
+				   socialshare-caption="{{checklist.description}}"
+				   socialshare-url="https://checkittool.herokuapp.com/checklists/{{checklist._id}}"
+				   socialshare-media="https://checkittool.herokuapp.com/modules/core/img/brand/logo.png"
+				   socialshare-hashtags="CheckIt, checkittool, checklists">
+					<i class="fa fa-google-plus"> Google+</i>
+				</a>
+			</li>
+			<li class="navbar-right" ng-show="checklist.status === 'published'">
+				<a href=""
+				   socialshare
+				   socialshare-provider="twitter"
+				   socialshare-text="CheckIt - {{checklist.name}}"
+				   socialshare-caption="{{checklist.description}}"
+				   socialshare-url="https://checkittool.herokuapp.com/checklists/{{checklist._id}}"
+				   socialshare-media="https://checkittool.herokuapp.com/modules/core/img/brand/logo.png"
+				   socialshare-hashtags="CheckIt, checkittool, checklists"
+				   socialshare-via="@CheckItTool">
+					<i class="fa fa-twitter-square"> Twitter</i>
+				</a>
 			</li>
         </ul>
 	</div>
