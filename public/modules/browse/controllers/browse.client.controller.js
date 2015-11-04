@@ -1,47 +1,67 @@
 'use strict';
 
 // Categories controller
-angular.module('browse').controller('BrowseController', ['$scope', '$stateParams', '$location', 'Authentication', 'Checklists', 'Categories', '$timeout',
-	function($scope, $stateParams, $location, Authentication, Checklists, Categories, $timeout) {
+angular.module('browse').controller('BrowseController', ['$scope', '$stateParams', '$location', 'Authentication', 'Checklists', 'Categories', 'lodash',
+	function($scope, $stateParams, $location, Authentication, Checklists, Categories, lodash) {
 		
 		$scope.authentication = Authentication,
-		$scope.filteredChecklists = [],
-		$scope.currentPage = 1,
-		$scope.numPerPage = 10,
-		$scope.maxSize = 10;
-		$scope.totalItems = 0;
-
-		//$scope.selectedCategory = undefined;
-		//$scope.search = $scope.selectedCategory;
+			$scope.catChecklists = [],
+			$scope.filteredChecklists = [],
+			$scope.currentPage = 0,
+			$scope.numPerPage = 10,
+			$scope.maxSize = 10;
+			$scope.totalItems = 0;
 
 		var updatePaging = function(){
 			var begin = (($scope.currentPage - 1) * $scope.numPerPage)
 				, end = begin + $scope.numPerPage;
-			$scope.filteredChecklists = $scope.checklists.slice(begin, end);
+			$scope.filteredChecklists = $scope.catChecklists.slice(begin, end);
 		};
+
+		var searchInTree = function searchTree(element, id){
+			if(element._id == id){
+				return element;
+			}else if (element.children != null){
+				var result = null;
+				for(var i=0; result == null && i < element.children.length; i++){
+					result = searchTree(element.children[i], id);
+				}
+				return result;
+			}
+			return null;
+		}
 		
 		// Find a list of Categories
 		$scope.find = function() {
 			$scope.categories = Categories.tree.query();
+
 			$scope.checklists = Checklists.browse();
 			$scope.checklists.$promise.then(function(data){
-			    $scope.filteredChecklists = $scope.checklists.slice(0, $scope.numPerPage);
+				$scope.catChecklists = $scope.checklists;
+				if($stateParams.categoryId){
+					$scope.selectCategory($stateParams.categoryId);
+				}else{
+					$scope.currentPage = 1;
+				}
 			});
 		};
-		
-		$scope.findCategory = function() {
-			$scope.find();
-			$scope.selectedCategory = $stateParams.categoryId;
-		};
-		
-		$scope.toggle = function(scope) {
-	      scope.toggle();
-	    };
-	    
+
 	    $scope.selectCategory = function(id){
-	    	$scope.selectedCategory = id;
+
+			$scope.catChecklists = lodash.filter( $scope.checklists, function(checklist){
+				if(!checklist.category) return false;
+				if(checklist.category._id == id){
+					return true;
+				}else{
+					var cat = searchInTree($scope.categories[0], id);
+					var cat = searchInTree(cat, checklist.category._id);
+					if(cat) return true;
+				}
+				return false;
+			});
+			$scope.currentPage = 1;
+
 			updatePaging();
-	    	//$scope.search = id;
 	    }
 	    
 	    $scope.$watch('currentPage + numPerPage', function() {
@@ -49,19 +69,11 @@ angular.module('browse').controller('BrowseController', ['$scope', '$stateParams
 		});
 
 		$scope.$watch('filteredChecklists', function() {
-			$scope.totalItems = $scope.filteredChecklists.length;
+			$scope.totalItems = $scope.catChecklists.length;
 		});
-	
-		//$timeout(function() {
-		//  // https://github.com/JimLiu/angular-ui-tree/issues/292
-		//  var treeElement = angular.element(document.querySelector('#CategoriesTree'));
-		//  if (treeElement) {
-		//    var treeScope = (typeof treeElement.scope === 'function') ? treeElement.scope() : undefined;
-		//    if (treeScope && typeof treeScope.$$childHead.collapseAll === 'function') {
-		//      treeScope.$$childHead.collapseAll();
-		//    }
-		//    //treeElement.show();
-		//  }
-		//}, 200);
+
+		$scope.toggle = function(scope) {
+			scope.toggle();
+		};
 	}
 ]);

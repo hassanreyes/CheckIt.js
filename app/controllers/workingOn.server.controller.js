@@ -242,12 +242,7 @@ exports.save = function(channel, checklist, callback) {
     if(checklist.category._id){
         checklist.category = checklist.category._id;
     }
-    if(!checklist.user){
-        checklist.user = channel.user.id;
-    }
-    if(checklist.user._id){
-        checklist.user = checklist.user._id;
-    }
+    checklist.user = channel.user.id;
     
     //Is it a create or an update
     if (checklist.id) {

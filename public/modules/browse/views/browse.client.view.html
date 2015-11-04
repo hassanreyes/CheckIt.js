@@ -27,7 +27,7 @@
         
         <div class="col-xs-* col-md-* col-xs-offset-6 col-md-offset-4">
             <div class="list-group">
-                <div data-ng-repeat="checklist in filteredChecklists | filter:selectedCategory | orderBy: 'category.name' | groupBy: 'category.name'" >
+                <div data-ng-repeat="checklist in filteredChecklists | orderBy: 'category.name' | groupBy: 'category.name'" >
                     <div ng-show="checklist.group_by_CHANGED">
                         <a data-ng-href="#!/browse/{{checklist.category._id}}" >
                             <h3 ng-show="checklist.group_by_CHANGED" class="category_name">{{checklist.category.name}}</h3>
@@ -45,7 +45,7 @@
                     </a>
                 </div>
             </div>
-            
+            xxxx
             <pagination ng-model="currentPage" total-items="totalItems" max-size="maxSize" boundary-links="true">
             </pagination>
         </div>
