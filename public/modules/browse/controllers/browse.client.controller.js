@@ -9,16 +9,23 @@ angular.module('browse').controller('BrowseController', ['$scope', '$stateParams
 		$scope.currentPage = 1,
 		$scope.numPerPage = 10,
 		$scope.maxSize = 10;
-		
+		$scope.totalItems = 0;
+
 		//$scope.selectedCategory = undefined;
 		//$scope.search = $scope.selectedCategory;
+
+		var updatePaging = function(){
+			var begin = (($scope.currentPage - 1) * $scope.numPerPage)
+				, end = begin + $scope.numPerPage;
+			$scope.filteredChecklists = $scope.checklists.slice(begin, end);
+		};
 		
 		// Find a list of Categories
 		$scope.find = function() {
 			$scope.categories = Categories.tree.query();
 			$scope.checklists = Checklists.browse();
 			$scope.checklists.$promise.then(function(data){
-			    $scope.filteredChecklists = $scope.checklists.slice(0, $scope.numPerPage);	
+			    $scope.filteredChecklists = $scope.checklists.slice(0, $scope.numPerPage);
 			});
 		};
 		
@@ -33,15 +40,17 @@ angular.module('browse').controller('BrowseController', ['$scope', '$stateParams
 	    
 	    $scope.selectCategory = function(id){
 	    	$scope.selectedCategory = id;
+			updatePaging();
 	    	//$scope.search = id;
 	    }
 	    
 	    $scope.$watch('currentPage + numPerPage', function() {
-		    var begin = (($scope.currentPage - 1) * $scope.numPerPage)
-		    , end = begin + $scope.numPerPage;
-		    
-		    $scope.filteredChecklists = $scope.checklists.slice(begin, end);
-	  	});
+			updatePaging();
+		});
+
+		$scope.$watch('filteredChecklists', function() {
+			$scope.totalItems = $scope.filteredChecklists.length;
+		});
 	
 		//$timeout(function() {
 		//  // https://github.com/JimLiu/angular-ui-tree/issues/292
