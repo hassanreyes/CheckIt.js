@@ -110,6 +110,10 @@ var UserSchema = new Schema( {
         enum: ['inactive', 'active' ],
         default: 'inactive'
     },
+    accept:{
+        type: Boolean,
+        required : "You must accept the Terms and Conditions"
+    },
     favorites: [{ 
         type: Schema.ObjectId, 
         ref: 'Checklist'

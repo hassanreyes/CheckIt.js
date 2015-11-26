@@ -47,6 +47,10 @@ angular.module('users').config(['$stateProvider',
 		state('favorites', {
 			url: '/favorites',
 			templateUrl: 'modules/users/views/favorites.client.view.html'
+		}).
+		state('termsAndConditions', {
+			url: '/termsAndConditions',
+			templateUrl: 'modules/users/views/termsAndConditions.html'
 		});
 	}
 ]);
