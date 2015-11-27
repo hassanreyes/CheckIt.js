@@ -33,7 +33,7 @@
 			class="chklst_title" placeholder="Enter the new Checklist name" required/>
 			
 	<!--Sections-->
-	<ul data-ng-repeat="section in checklist.sections" id="create_chklst_section_{{$index}}" style="list-style-type: none;">
+	<ul data-ng-repeat="section in checklist.sections" id="create_chklst_section_{{$index}}" style="list-style-type: none; padding-left: 0px;">
 		<li class="list-group-item">
 			<small><a data-ng-click="removeSection(checklist, $index)"><span class="glyphicon glyphicon-remove chklst_remove highlight"></span></a></small>
 			<input type="text" class="chklst_section_name" placeholder="Section Name" 
