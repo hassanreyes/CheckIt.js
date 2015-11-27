@@ -16,7 +16,7 @@ exports.onChatConnect = function(socket){
 
 	socket.on('user:login', function(data, callback) {
 		if(data && data._id){
-			console.log('Chat - user loging in...');
+			console.log('Chat - user logging in...');
 
 			User.findOne({_id : data._id}).exec(function(error, user){
 				if(error){
