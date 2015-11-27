@@ -57,7 +57,7 @@ angular.module('checklists').controller('WorkingChecklistsController', ['$scope'
 			var continueInit = function(){
 				//Loads categories
 	            $scope.categories = $rootScope.categories;
-	            if($scope.categories.length > 0){
+	            if($scope.categories && $scope.categories.length > 0){
 	            	$scope.category = $scope.categories[0];
 	            }
 	            //Register to WorkingOnChecklist service as observer in order to sync
