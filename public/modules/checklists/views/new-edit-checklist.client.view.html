@@ -8,17 +8,19 @@
     		<li>{{err}}</li>
     	</ul>
     </div>
+
+	<h2>Working On Checklist</h2>
+
+	<div class="container-fluid col-lg-10" >
+		<ul class="nav navbar-nav inline">
+			<li><a data-ng-click="new()" title="New"><span class="glyphicon glyphicon-file"></span></a></li>
+			<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
+			<li><a data-ng-click="save()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
+		</ul>
+	</div>
     
     <!--data-ng-keydown="onKeyDown($event);"-->
     <div class="col-md-12 container">
-    	<div class="row">
-    		<h2>Working On Checklist</h2>
-			<ul class="nav navbar-nav inline">
-		    	<li><a data-ng-click="new()" title="New"><span class="glyphicon glyphicon-file"></span></a></li>
-		    	<li><a data-ng-click="printDiv('printable-working')" title="Print version"><span class="glyphicon glyphicon-print"></span></a></li>
-				<li><a data-ng-click="save()" title="Save"><span class="glyphicon glyphicon-floppy-disk"></span></a></li>
-		    </ul>
-    	</div>
     	<div class="row">
 	    	<ui-select ng-model="category" on-select="categorySelected($item, $model);" theme="bootstrap" style="width: 200px;" required>
 				<ui-select-match placeholder="Select a category">{{$select.selected.name}}</ui-select-match>
