@@ -95,7 +95,8 @@ var update = function(property, id, checklist, callback) {
     }
 
     User.update(conditions, update, options, function(err, n) {
-        if(n == 0){ callback("Checklist could not be loaded on working on"); }
+        if(n == 0){ callback("Checklist could not be loaded on working on Conditions[" + JSON.stringify(conditions)
+            + "], workingOn[" + JSON.stringify(workingOn) + "]"); }
         else{ callback(err, workingOn); }
     });
 };
